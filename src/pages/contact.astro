@@ -3,23 +3,22 @@ import Base from '../layouts/Base.astro';
 const email = import.meta.env.PUBLIC_CONTACT_EMAIL ?? '';
 ---
 <Base title="Contact – get a quote">
-<section class="block wrap">
-<p style="font-weight:800;letter-spacing:.2em;font-size:12px;color:var(--red)">CONTACT</p>
-<h1 style="font-size:clamp(30px,5vw,50px);margin-top:8px">Get a quote.</h1>
-<div class="split">
-<div>
-<div class="scard"><h3>📞 01933 422290</h3><p>Mon–Fri 07:30–17:30 · Sat by appointment. Photos get the fastest, most accurate quotes.</p></div>
-<div class="scard" style="margin-top:14px"><h3>📍 Workshop</h3><p>Message for the drop-off address and current lead time — fleet slots available.</p></div>
-</div>
-<form class="card" id="qform">
-<label>Your name<input name="name" required placeholder="Jane Bloggs" /></label>
-<label>Phone<input name="phone" required placeholder="07…" /></label>
-<label>Vehicle / job type<select name="category"><option>car</option><option>bike</option><option>van</option><option>commercial</option><option>plant</option><option>classic</option></select></label>
-<label>Details<textarea name="message" rows="5" required placeholder="e.g. Focus ST bonnet + bumper stone chips, photos to follow…"></textarea></label>
-<button class="btn" type="submit">Send enquiry →</button>
-<p id="status" style="font-size:14px"></p>
-</form>
-</div>
+<section class="block">
+  <div class="section-head"><p class="kicker">CONTACT</p><h1>Get a quote.</h1></div>
+  <div class="split wrap">
+    <div>
+      <div class="scard"><h3>📞 01933 422290</h3><p>Mon–Fri 07:30–17:30 · Sat by appointment. Photos get the fastest, most accurate quotes.</p></div>
+      <div class="scard" style="margin-top:14px"><h3>📍 Workshop</h3><p>Message for the drop-off address and current lead time — fleet slots available.</p></div>
+    </div>
+    <form class="card" id="qform">
+      <label>Your name<input name="name" required placeholder="Jane Bloggs" /></label>
+      <label>Phone<input name="phone" required placeholder="07…" /></label>
+      <label>Vehicle / job type<select name="category"><option>car</option><option>bike</option><option>van</option><option>commercial</option><option>plant</option><option>classic</option></select></label>
+      <label>Details<textarea name="message" rows="5" required placeholder="e.g. Focus ST bonnet + bumper stone chips, photos to follow…"></textarea></label>
+      <button class="btn" type="submit">Send enquiry →</button>
+      <p id="status" style="font-size:14px"></p>
+    </form>
+  </div>
 </section>
 <script define:vars={{ email }}>
 const form = document.getElementById('qform');

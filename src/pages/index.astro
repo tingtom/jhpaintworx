@@ -1,87 +1,64 @@
 ---
 import Base from '../layouts/Base.astro';
+import HeroSlider from '../components/HeroSlider.astro';
 import { getCollection } from 'astro:content';
 const base = import.meta.env.BASE_URL;
 const jobs = await getCollection('jobs');
 const featured = jobs.filter(j => j.data.featured).slice(0, 6);
 const showJobs = featured.length ? featured : jobs.slice(0, 6);
 const img = (j: any) => j.data.image ?? `https://picsum.photos/seed/${j.slug}/800/600`;
+const LABELS: Record<string,string> = { all:'All', car:'Cars', bike:'Bikes', van:'Vans', commercial:'Commercial', plant:'Plant & machinery', classic:'Classics' };
 ---
 <Base title="Professional Automotive Spray Painting">
-<!-- HERO -->
-<div class="hero">
-<img class="bg" src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1800&auto=format&fit=crop" alt="Showroom paint finish" />
-<div class="shade"></div>
-<div class="inner">
-<span class="kicker">★ NORTHAMPTONSHIRE PAINT SHOP</span>
-<h1>Showroom paintwork for <span>cars, bikes & commercials.</span></h1>
-<p class="lead">Full resprays, panel repairs, colour matching and custom refinishing — prepped properly, painted properly, built to last.</p>
-<div class="btnrow">
-<a class="btn" href={`${base}gallery/`}>View paint work →</a>
-<a class="btn ghost" href={`${base}contact/`}>Get a quote · 01933 422290</a>
-</div>
-<div class="stats">
-<div class="stat"><b>6+</b><span>VEHICLE CATEGORIES</span></div>
-<div class="stat"><b>2K</b><span>2-PACK PAINT SYSTEM</span></div>
-<div class="stat"><b>⌖</b><span>SPECTRO MATCHING</span></div>
-<div class="stat"><b>5★</b><span>RATED WORKSHOP</span></div>
-</div>
-</div>
-</div>
-<div class="strip"><div>&nbsp;FULL RESPRAYS ✦ PANEL REPAIR ✦ COLOUR MATCHING ✦ COMMERCIALS ✦ PLANT ✦ CLASSICS ✦ BIKES ✦&nbsp;FULL RESPRAYS ✦ PANEL REPAIR ✦ COLOUR MATCHING ✦ COMMERCIALS ✦ PLANT ✦ CLASSICS ✦ BIKES ✦</div></div>
+<HeroSlider />
 
 <!-- SERVICES -->
-<section class="block wrap">
-<p style="font-weight:800;letter-spacing:.2em;font-size:12px;color:var(--red)">WHAT WE DO</p>
-<h2 style="font-size:clamp(26px,4vw,40px);margin-top:8px">Everything short of building the car.</h2>
-<div class="cards">
-<div class="scard"><div class="ic">🚚</div><h3>Commercial Vehicle Paintwork</h3><p>Fleet cabs, vans and HGVs in hard-wearing 2-pack colour. Minimal downtime, matched to livery.</p></div>
-<div class="scard"><div class="ic">🚜</div><h3>Plant & Machinery</h3><p>Diggers, trailers and hire fleet rub-downs and repaints that survive site life.</p></div>
-<div class="scard"><div class="ic">✨</div><h3>Full Resprays</h3><p>Bare-metal prep, colour changes and glass-out jobs with a deep, flat finish.</p></div>
-<div class="scard"><div class="ic">🔨</div><h3>Panel Beating & Repairs</h3><p>Dents, scratches and scuffs repaired and blended — invisible, not "near enough".</p></div>
-<div class="scard"><div class="ic">🎯</div><h3>Expert Colour Matching</h3><p>Spectrometer readings + spray-out cards so metallics and pearls actually match.</p></div>
-<div class="scard"><div class="ic">🏭</div><h3>Welding & Restoration</h3><p>Sills, arches and classic shells repaired properly before a drop of paint goes on.</p></div>
-</div>
+<section class="block">
+  <div class="section-head"><p class="kicker">WHAT WE DO</p><h2>Everything short of building the car.</h2><p class="sub">Six core services — every job gets the same prep discipline.</p></div>
+  <div class="cards wrap">
+    <div class="scard"><div class="ic">🚚</div><h3>Commercial Vehicle Paintwork</h3><p>Fleet cabs, vans and HGVs in hard-wearing 2-pack colour. Minimal downtime, matched to livery.</p></div>
+    <div class="scard"><div class="ic">🚜</div><h3>Plant & Machinery</h3><p>Diggers, trailers and hire fleet rub-downs and repaints that survive site life.</p></div>
+    <div class="scard"><div class="ic">✨</div><h3>Full Resprays</h3><p>Bare-metal prep, colour changes and glass-out jobs with a deep, flat finish.</p></div>
+    <div class="scard"><div class="ic">🔨</div><h3>Panel Beating & Repairs</h3><p>Dents, scratches and scuffs repaired and blended — invisible, not "near enough".</p></div>
+    <div class="scard"><div class="ic">🎯</div><h3>Expert Colour Matching</h3><p>Spectrometer readings plus spray-out cards so metallics and pearls actually match.</p></div>
+    <div class="scard"><div class="ic">🏭</div><h3>Welding & Restoration</h3><p>Sills, arches and classic shells repaired properly before a drop of paint goes on.</p></div>
+  </div>
 </section>
 
 <!-- FEATURED WORK -->
-<section class="block wrap" style="padding-top:0">
-<div style="display:flex;align-items:end;justify-content:space-between;gap:12px;flex-wrap:wrap">
-<div><p style="font-weight:800;letter-spacing:.2em;font-size:12px;color:var(--red)">RECENT JOBS</p>
-<h2 style="font-size:clamp(26px,4vw,40px);margin-top:8px">Fresh out of the booth.</h2></div>
-<a class="btn ghost" style="color:var(--navy);border-color:var(--navy)" href={`${base}gallery/`}>All paint work →</a>
-</div>
-<div class="grid">
-{showJobs.map(j => (
-<article class="job">
-<div class="im"><img src={img(j)} alt={j.data.title} loading="lazy" /><span class="cat">{j.data.category}</span></div>
-<div class="p"><h3>{j.data.title}</h3><p>{j.data.description ?? ''}</p></div>
-</article>
-))}
-</div>
-<div class="pills">
-<a class="on" href={`${base}gallery/`}>All</a>
-<a href={`${base}gallery/car/`}>Cars</a>
-<a href={`${base}gallery/bike/`}>Bikes</a>
-<a href={`${base}gallery/van/`}>Vans</a>
-<a href={`${base}gallery/commercial/`}>Commercial</a>
-<a href={`${base}gallery/plant/`}>Plant</a>
-<a href={`${base}gallery/classic/`}>Classics</a>
-</div>
+<section class="block">
+  <div class="section-head" style="display:flex;align-items:end;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <div><p class="kicker">RECENT JOBS</p><h2>Fresh out of the booth.</h2></div>
+    <a class="btn ghost" style="color:var(--navy);border-color:var(--navy);margin-bottom:4px" href={`${base}gallery/`}>All paint work →</a>
+  </div>
+  <div class="grid wrap">
+    {showJobs.map(j => (
+      <article class="job">
+        <div class="im"><img src={img(j)} alt={j.data.title} loading="lazy" /><span class="cat">{LABELS[j.data.category]}</span></div>
+        <div class="p"><h3>{j.data.title}</h3><p>{j.data.description ?? ''}</p></div>
+      </article>
+    ))}
+  </div>
+  <div class="pills wrap">
+    <a class="on" href={`${base}gallery/`}>All</a>
+    <a href={`${base}gallery/car/`}>Cars</a>
+    <a href={`${base}gallery/bike/`}>Bikes</a>
+    <a href={`${base}gallery/van/`}>Vans</a>
+    <a href={`${base}gallery/commercial/`}>Commercial</a>
+    <a href={`${base}gallery/plant/`}>Plant</a>
+    <a href={`${base}gallery/classic/`}>Classics</a>
+  </div>
 </section>
 
 <!-- PROCESS -->
 <section class="block" style="background:#0f2440;color:#fff">
-<div class="wrap">
-<p style="font-weight:800;letter-spacing:.2em;font-size:12px;color:var(--cream)">HOW IT WORKS</p>
-<h2 style="font-size:clamp(26px,4vw,38px);margin-top:8px">Straightforward, no surprises.</h2>
-<div class="steps">
-<div class="step"><b>01</b><h3>Send photos</h3><p>Message or call 01933 422290 with photos of the vehicle and damage.</p></div>
-<div class="step"><b>02</b><h3>Fixed quote</h3><p>Honest price for prep, paint and materials — agreed before we start.</p></div>
-<div class="step"><b>03</b><h3>Prep & paint</h3><p>Strip, fill, prime, flat, paint, lacquer, cut and polish.</p></div>
-<div class="step"><b>04</b><h3>Collect & gleam</h3><p>Checked in daylight, finished details dressed, ready to show.</p></div>
-</div>
-<div class="cta-band"><div><h2>Get your paintwork booked in.</h2><p>Call 01933 422290 · 07:30–17:30, or send photos for a fast quote.</p></div><a class="btn light" href={`${base}contact/`}>Request a quote →</a></div>
-</div>
+  <div class="section-head"><p class="kicker" style="color:var(--cream)">HOW IT WORKS</p><h2>Straightforward, no surprises.</h2></div>
+  <div class="steps wrap">
+    <div class="step"><b>01</b><h3>Send photos</h3><p>Message or call 01933 422290 with photos of the vehicle and damage.</p></div>
+    <div class="step"><b>02</b><h3>Fixed quote</h3><p>Honest price for prep, paint and materials — agreed before we start.</p></div>
+    <div class="step"><b>03</b><h3>Prep & paint</h3><p>Strip, fill, prime, flat, paint, lacquer, cut and polish.</p></div>
+    <div class="step"><b>04</b><h3>Collect & gleam</h3><p>Checked in daylight, finished details dressed, ready to show.</p></div>
+  </div>
+  <div class="cta-band wrap"><div><h2>Get your paintwork booked in.</h2><p>Call 01933 422290 · 07:30–17:30, or send photos for a fast quote.</p></div><a class="btn light" href={`${base}contact/`}>Request a quote →</a></div>
 </section>
 </Base>

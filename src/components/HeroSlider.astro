@@ -1,0 +1,66 @@
+---
+// Hero slider — full-width, auto-advancing, swipable on touch.
+// Slides: 3 real paint-work photos. To change, edit this array only.
+const slides = [
+  { src: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=2000&auto=format&fit=crop', alt: 'Red classic respray' },
+  { src: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?q=80&w=2000&auto=format&fit=crop', alt: 'Bike tank repaint' },
+  { src: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=2000&auto=format&fit=crop', alt: 'Fleet van refresh' },
+];
+const base = import.meta.env.BASE_URL;
+const captions = [
+  'Classic respray — bare metal, 3-stage red, cut & polish.',
+  'Bike tank & panels — candy base, lacquer, showroom shine.',
+  'Fleet vans — livery-matched, minimal downtime.',
+];
+---
+<div class="hero" id="hero">
+  {slides.map((s, i) => (
+    <img class="hero-slide" data-i={i} src={s.src} alt={s.alt} loading={i === 0 ? 'eager' : 'lazy'} />
+  ))}
+  <div class="shade"></div>
+  <div class="hero-inner">
+    <span class="kicker">★ NORTHAMPTONSHIRE PAINT SHOP</span>
+    <h1 class="hero-title">Showroom paintwork for <span>cars, bikes & commercials.</span></h1>
+    <p class="hero-lead">Full resprays, panel repairs, colour matching and custom refinishing — prepped properly, painted properly, built to last.</p>
+    <div class="btnrow">
+      <a class="btn" href={`${base}gallery/`}>View paint work →</a>
+      <a class="btn ghost" href={`${base}contact/`}>Get a quote · 01933 422290</a>
+    </div>
+    <div class="hero-cap" id="hero-cap">{captions[0]}</div>
+    <div class="hero-dots" id="hero-dots">
+      {slides.map((_, i) => <button class={i === 0 ? 'on' : ''} data-i={i} aria-label={`Slide ${i + 1}`} />)}
+    </div>
+  </div>
+</div>
+
+<script>
+  const hero = document.getElementById('hero');
+  const slides = hero.querySelectorAll('.hero-slide');
+  const cap = document.getElementById('hero-cap');
+  const dots = hero.querySelectorAll('.hero-dots button');
+  const texts = (window.__heroTexts = window.__heroTexts || [
+    'Classic respray — bare metal, 3-stage red, cut & polish.',
+    'Bike tank & panels — candy base, lacquer, showroom shine.',
+    'Fleet vans — livery-matched, minimal downtime.',
+  ]);
+  let i = 0, timer;
+  const show = (n) => {
+    i = ((n % slides.length) + slides.length) % slides.length;
+    slides.forEach((s, k) => s.style.opacity = k === i ? '1' : '0');
+    cap.textContent = texts[i];
+    dots.forEach((d, k) => d.classList.toggle('on', k === i));
+  };
+  const next = () => show(i + 1);
+  const start = () => { timer = setInterval(next, 4500); };
+  const stop = () => clearInterval(timer);
+  dots.forEach((d) => d.addEventListener('click', () => { stop(); show(+d.dataset.i); start(); }));
+  hero.addEventListener('mouseenter', stop);
+  hero.addEventListener('mouseleave', start);
+  hero.addEventListener('touchstart', (e) => { stop(); hero._sx = e.touches[0].clientX; }, { passive: true });
+  hero.addEventListener('touchend', (e) => {
+    const dx = (hero._sx || 0) - (e.changedTouches[0].clientX || 0);
+    if (Math.abs(dx) > 40) { next(); }
+    start();
+  });
+  show(0); start();
+</script>
