@@ -53,7 +53,9 @@ header.site{position:sticky;top:0;z-index:50;background:rgba(15,36,64,.92);backd
 .strip{background:var(--cream);border-block:3px solid var(--navy);overflow:hidden;white-space:nowrap}
 .strip div{display:inline-block;padding:10px 0;font-weight:900;letter-spacing:.22em;font-size:13px;color:var(--navy);animation:slide 22s linear infinite}
 @keyframes slide{to{transform:translateX(-50%)}}
-section.block{padding:56px 0}
+section.block{padding-block:56px}
+.split{display:grid;grid-template-columns:1.15fr 1fr;gap:28px;margin-top:24px;align-items:start}
+.split>div{min-width:0}.split p{line-height:1.7}.split img.frame{width:100%;border-radius:18px;object-fit:cover;aspect-ratio:4/3;display:block}
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
 .scard{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 6px 20px rgba(16,28,44,.06);transition:.2s}
 .scard:hover{transform:translateY(-4px);box-shadow:0 16px 34px rgba(16,28,44,.12)}
@@ -85,7 +87,8 @@ form.card{background:#fff;border:1px solid var(--line);border-radius:18px;paddin
 form.card label{font-weight:600;font-size:14px;display:block;margin-top:10px}
 form.card input,form.card textarea,form.card select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:10px;margin-top:6px;font-size:15px}
 @media(max-width:900px){.cards,.grid{grid-template-columns:repeat(2,1fr)}.steps{grid-template-columns:repeat(2,1fr)}.stats{grid-template-columns:repeat(2,1fr)}footer .cols{grid-template-columns:1fr}.links{display:none}.links.open{display:flex;position:absolute;top:100%;left:0;right:0;background:var(--navy);flex-direction:column;padding:12px}.burger{display:block}}
-@media(max-width:600px){.cards,.grid{grid-template-columns:1fr}.hero .inner{padding:60px 20px 48px}}
+@media(max-width:800px){.split{grid-template-columns:1fr}}
+@media(max-width:600px){.cards,.grid{grid-template-columns:1fr}.hero .inner{padding:60px 20px 48px}.stats{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>

@@ -6,22 +6,21 @@ const base = import.meta.env.BASE_URL;
 <section class="block wrap">
 <p style="font-weight:800;letter-spacing:.2em;font-size:12px;color:var(--red)">ABOUT</p>
 <h1 style="font-size:clamp(30px,5vw,50px);margin-top:8px">A paint shop that sweats the prep.</h1>
-<div style="display:grid;grid-template-columns:1.2fr 1fr;gap:24px;margin-top:20px" class="aboutgrid">
+<div class="split">
 <div>
-<p style="font-size:17px;line-height:1.7">At JH Paintworx we refresh, restore and reimagine vehicles with flawless finishes and obsessive attention to detail. From commercial fleets and plant-hire machinery to cherished classics, the team is committed to outstanding results every time.</p>
-<p style="color:var(--mut);line-height:1.7">No "that’ll do". Panels are stripped, filled, primed and flatted until they’re right — then colour and lacquer go on in a controlled booth. That’s why matches disappear and resprays stay glossy.</p>
-<ul style="line-height:2">
+<p style="font-size:17px">At JH Paintworx we refresh, restore and reimagine vehicles with flawless finishes and obsessive attention to detail. From commercial fleets and plant-hire machinery to cherished classics, the team is committed to outstanding results every time.</p>
+<p style="color:var(--mut)">No "that'll do". Panels are stripped, filled, primed and flatted until they're right — then colour and lacquer go on in a controlled booth. That's why matches disappear and resprays stay glossy.</p>
+<ul style="line-height:2.1;padding-left:20px">
 <li>✅ Commercial fleets welcome</li>
 <li>✅ Insurance-friendly photo quotes</li>
-<li>✅ Classics & restorations</li>
+<li>✅ Classics &amp; restorations</li>
 <li>✅ Bikes, vans, HGVs, plant</li>
 </ul>
 <p><a class="btn" href={`${base}gallery/`}>See the proof →</a></p>
 </div>
 <div>
-<img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1000&auto=format&fit=crop" alt="Classic car paintwork" style="width:100%;border-radius:18px;object-fit:cover;aspect-ratio:4/5" loading="lazy" />
+<img class="frame" src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1000&auto=format&fit=crop" alt="Classic car paintwork" loading="lazy" />
 </div>
 </div>
 </section>
-<style>.aboutgrid@media(max-width:800px){.aboutgrid{grid-template-columns:1fr!important}}</style>
 </Base>
