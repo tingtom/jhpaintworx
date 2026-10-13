@@ -1,0 +1,31 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+export async function getStaticPaths() {
+  const cats = ['car','bike','van','commercial','plant','classic'];
+  return cats.map((category) => ({ params: { category } }));
+}
+const { category } = Astro.params as { category: string };
+const base = import.meta.env.BASE_URL;
+const cats = ['all','car','bike','van','commercial','plant','classic'];
+const jobs = await getCollection('jobs');
+const list = jobs.filter(j=>j.data.category===category);
+---
+<Base title={`${category} paint work`}>
+<h1>{category} paint work</h1>
+<p class="filters">
+{cats.map(c => (
+<a class={`btn ${category===c?'active':''}`} href={c==='all'?`${base}gallery/`:`${base}gallery/${c}/`}>{c}</a>
+))}
+</p>
+<div class="grid">
+{list.map(j => (
+<article class="card">
+<img src={j.data.image ?? `https://picsum.photos/seed/${j.slug}/600/400`} alt={j.data.title} loading="lazy" />
+<div class="p"><span class="pill">{j.data.category}</span><h3>{j.data.title}</h3><p>{j.data.description}</p></div>
+</article>
+))}
+</div>
+{list.length===0 && <p>No jobs in {category} yet. Add via Admin.</p>}
+<p><a href={`${base}gallery/`}>← All work</a></p>
+</Base>

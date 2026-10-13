@@ -1,0 +1,38 @@
+# Sveltia CMS (Decap-compatible fork). Runs as static /admin/ – no server to host.
+# Auth: GitHub via OAuth proxy. See README for one-time proxy setup.
+backend:
+  name: github
+  repo: tingtom/jhpaintworx
+  branch: main
+  base_url: https://sveltia-oauth.example.workers.dev
+  auth_endpoint: authorize
+  # Replace base_url with your free Cloudflare Worker (sveltia/oauth-proxy) URL.
+
+media_folder: public/images/uploads
+public_folder: /jhpaintworx/images/uploads
+site_url: https://tingtom.github.io/jhpaintworx/
+logo_url: /jhpaintworx/logo.svg
+
+collections:
+  - name: jobs
+    label: Paint jobs (gallery)
+    folder: src/content/jobs
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Category, name: category, widget: select, options: [car, bike, van, commercial, plant, classic] }
+      - { label: Cover image, name: image, widget: image, required: false }
+      - { label: Date, name: date, widget: datetime, required: false }
+      - { label: Featured on homepage, name: featured, widget: boolean, default: false }
+      - { label: Description, name: description, widget: text, required: false }
+      - { label: Body, name: body, widget: markdown, required: false }
+  - name: services
+    label: Services
+    folder: src/content/services
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Order, name: order, widget: number, default: 0 }
+      - { label: Body, name: body, widget: markdown, required: false }

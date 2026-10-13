@@ -1,0 +1,57 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description = 'JH Paintworx – professional automotive spray painting, panel repairs and custom refinishing.' } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const site = import.meta.env.PUBLIC_SITE_URL ?? 'https://tingtom.github.io/jhpaintworx/';
+---
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{title} | JH Paintworx</title>
+<meta name="description" content={description} />
+<link rel="icon" href={`${base}favicon.svg`} />
+<style>
+:root{--navy:#1a3556;--red:#c1272d;--cream:#f6eac5;--ink:#14202e}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:#fff}
+header{background:var(--navy);color:#fff;position:sticky;top:0;z-index:10}
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px}
+.nav{display:flex;align-items:center;gap:16px;padding:12px 16px}
+.nav img{height:44px;background:var(--cream);border-radius:8px;padding:2px 6px}
+.nav a{color:#fff;text-decoration:none;font-weight:600;margin-left:12px}
+.nav a:hover{color:var(--cream)}
+.hero{background:linear-gradient(135deg,var(--navy),#0e2138);color:#fff;padding:56px 0}
+.hero h1{margin:0 0 8px;font-size:clamp(28px,5vw,52px)}
+.btn{display:inline-block;background:var(--red);color:#fff;padding:12px 20px;border-radius:10px;text-decoration:none;font-weight:700;margin-right:8px}
+.btn.ghost{background:transparent;border:2px solid var(--cream)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;padding:24px 0}
+.card{border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;background:#fff}
+.card img{width:100%;height:180px;object-fit:cover;display:block;background:#eee}
+.card .p{padding:12px}.pill{display:inline-block;background:var(--cream);border-radius:999px;padding:2px 10px;font-size:12px;font-weight:700;text-transform:uppercase}
+footer{background:var(--navy);color:#cbd5e1;padding:24px 0;margin-top:32px}
+.filters a{margin:4px 6px 4px 0}
+.filters a.active{background:var(--navy);color:#fff}
+form input,form textarea,form select{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;margin:6px 0}
+</style>
+</head>
+<body>
+<header><div class="wrap nav">
+<img src={`${base}logo.svg`} alt="JH Paintworx logo" />
+<strong>JH PAINTWORX</strong>
+<nav style="margin-left:auto">
+<a href={`${base}`}>Home</a>
+<a href={`${base}gallery/`}>Gallery</a>
+<a href={`${base}services/`}>Services</a>
+<a href={`${base}about/`}>About</a>
+<a href={`${base}contact/`}>Contact</a>
+<a href={`${base}admin/`}>Admin</a>
+</nav>
+</div></header>
+<main class="wrap"><slot /></main>
+<footer><div class="wrap">© {new Date().getFullYear()} JH Paintworx · 01933 422290 · 07:30–17:30 · <a style="color:#fff" href={`${base}contact/`}>Contact</a></div></footer>
+</body>
+</html>

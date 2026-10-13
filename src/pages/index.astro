@@ -1,0 +1,25 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+const base = import.meta.env.BASE_URL;
+const jobs = await getCollection('jobs');
+const featured = jobs.filter(j => j.data.featured).slice(0, 6);
+---
+<Base title="Professional Automotive Spray Painting">
+<section class="hero" style="margin:0 -16px;padding-left:16px;padding-right:16px">
+<h1>Professional Automotive Spray Painting</h1>
+<p>Premium finishes for cars, bikes, vans, commercials, plant & classics. Colour matching, panel repairs, full resprays.</p>
+<p><a class="btn" href={`${base}gallery/`}>View paint work</a><a class="btn ghost" href={`${base}contact/`}>Get a quote · 01933 422290</a></p>
+</section>
+<h2>Featured work</h2>
+<div class="grid">
+{featured.map(j => (
+<article class="card"><a href={`${base}gallery/`}><img src={j.data.image ?? `https://picsum.photos/seed/${j.slug}/600/400`} alt={j.data.title} loading="lazy" /></a><div class="p"><span class="pill">{j.data.category}</span><h3 style="margin:8px 0">{j.data.title}</h3></div></article>
+))}
+{featured.length===0 && <p>No featured jobs yet – add some in <a href={`${base}admin/`}>Admin</a>.</p>}
+</div>
+<h2>Services</h2>
+<ul>
+<li>Commercial Vehicle Paintwork</li><li>Plant & Machinery Paintwork</li><li>Full Resprays</li><li>Panel Beating & Repairs</li><li>Expert Colour Matching</li><li>Welding & Restoration</li>
+</ul>
+</Base>

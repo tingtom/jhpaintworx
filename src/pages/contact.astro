@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+const email = import.meta.env.PUBLIC_CONTACT_EMAIL ?? '';
+---
+<Base title="Contact">
+<h1>Contact / Get a quote</h1>
+<p>Phone <strong>01933 422290</strong> · 07:30–17:30</p>
+<form id="qform">
+<label>Name<input name="name" required /></label>
+<label>Phone<input name="phone" required /></label>
+<label>Vehicle / job<select name="category"><option>car</option><option>bike</option><option>van</option><option>commercial</option><option>plant</option><option>classic</option></select></label>
+<label>Details<textarea name="message" rows="5" required></textarea></label>
+<button class="btn" type="submit">Send enquiry</button>
+<p id="status"></p>
+</form>
+<script define:vars={{ email }}>
+const form = document.getElementById('qform');
+const status = document.getElementById('status');
+form?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!email) { status.textContent = 'Set PUBLIC_CONTACT_EMAIL in repo Variables to enable form.'; return; }
+  const data = Object.fromEntries(new FormData(form));
+  status.textContent = 'Sending…';
+  try {
+    const r = await fetch(`https://formsubmit.co/ajax/${email}`, { method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'}, body: JSON.stringify(data) });
+    status.textContent = r.ok ? 'Sent – we will be in touch.' : 'Send failed, please call 01933 422290.';
+    if (r.ok) form.reset();
+  } catch { status.textContent = 'Send failed, please call 01933 422290.'; }
+});
+</script>
+<p style="font-size:13px;color:#555">Static-site form: recipient comes from <code>PUBLIC_CONTACT_EMAIL</code> repo variable. No backend to host.</p>
+</Base>
