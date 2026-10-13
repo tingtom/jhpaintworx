@@ -4,22 +4,26 @@ import { getCollection } from 'astro:content';
 const base = import.meta.env.BASE_URL;
 const cats = ['all','car','bike','van','commercial','plant','classic'];
 const jobs = await getCollection('jobs');
+const img = (j: any) => j.data.image ?? `https://picsum.photos/seed/${j.slug}/800/600`;
 ---
-<Base title="Gallery">
-<h1>Paint work gallery</h1>
-<p>Categorised by car / bike / van / commercial / plant / classic.</p>
-<p class="filters">
+<Base title="Paint work gallery">
+<section class="block wrap">
+<p style="font-weight:800;letter-spacing:.2em;font-size:12px;color:var(--red)">GALLERY</p>
+<h1 style="font-size:clamp(30px,5vw,50px);margin-top:8px">Paint work, by category.</h1>
+<p style="color:var(--mut);max-width:60ch">Tap a category to filter. New jobs appear here automatically when added in Admin.</p>
+<div class="pills">
 {cats.map(c => (
-<a class={`btn ${c==='all'?'active':''}`} href={c==='all'?`${base}gallery/`:`${base}gallery/${c}/`}>{c}</a>
+<a class={c==='all'?'on':''} href={c==='all'?`${base}gallery/`:`${base}gallery/${c}/`}>{c}</a>
 ))}
-</p>
+</div>
 <div class="grid">
 {jobs.map(j => (
-<article class="card">
-<img src={j.data.image ?? `https://picsum.photos/seed/${j.slug}/600/400`} alt={j.data.title} loading="lazy" />
-<div class="p"><span class="pill">{j.data.category}</span><h3>{j.data.title}</h3><p>{j.data.description}</p></div>
+<article class="job">
+<div class="im"><img src={img(j)} alt={j.data.title} loading="lazy" /><span class="cat">{j.data.category}</span></div>
+<div class="p"><h3>{j.data.title}</h3><p>{j.data.description ?? ''}</p></div>
 </article>
 ))}
 </div>
-{jobs.length===0 && <p>No jobs yet. Add via Admin.</p>}
+{jobs.length===0 && <p>No jobs yet — add some via <a href={`${base}admin/`}>Admin</a>.</p>}
+</section>
 </Base>
