@@ -7,9 +7,9 @@ const LABELS: Record<string,string> = { all:'All', car:'Cars', bike:'Bikes', van
 const jobs = await getCollection('jobs');
 const img = (j: any) => j.data.image ?? `https://picsum.photos/seed/${j.slug}/800/600`;
 ---
-<Base title="Paint work gallery">
+<Base title="Gallery">
 <section class="block">
-  <div class="section-head"><p class="kicker">GALLERY</p><h1>Paint work, by category.</h1><p class="sub">Tap a category to filter. New jobs appear here automatically when added in Admin.</p></div>
+  <div class="section-head"><p class="kicker">GALLERY</p><h1>Our work, by category.</h1><p class="sub">Tap a category to filter. New jobs appear here automatically when added in Admin.</p></div>
   <div class="pills wrap">
     {cats.map(c => (
       <a class={c==='all'?'on':''} href={c==='all'?`${base}gallery/`:`${base}gallery/${c}/`}>{LABELS[c]}</a>

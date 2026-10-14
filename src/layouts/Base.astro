@@ -1,4 +1,5 @@
 ---
+import { Phone, Clock, Menu } from 'lucide-astro';
 interface Props { title: string; description?: string; }
 const { title, description = 'JH Paintworx – showroom paintwork for cars, bikes, commercials, plant & classics. Colour matching, panel repair, full resprays.' } = Astro.props;
 const base = import.meta.env.BASE_URL;
@@ -27,10 +28,14 @@ section.block p a:not(.btn):hover{color:var(--red);text-decoration-color:var(--r
 ul,ol{line-height:1.8;margin:0 0 1em;padding-left:1.4em}
 li{margin-bottom:.4em}
 .topbar{background:var(--red);color:#fff;font-size:13px;font-weight:600;white-space:nowrap}
-.topbar .wrap{display:flex;gap:16px;justify-content:space-between;padding:7px 16px;align-items:center}
+.topbar .wrap{display:flex;gap:18px;justify-content:center;padding:7px 16px;align-items:center;font-size:12.5px}
 .topbar .wrap a{color:#fff;text-decoration:none;font-weight:700}
 .topbar .wrap a:hover{text-decoration:underline}
-@media(max-width:600px){.topbar .wrap{flex-direction:column;gap:2px;padding:6px 16px;text-align:center;font-size:11px}.hero-inner{padding:80px 20px 120px}.hero-cap{display:none}}
+.topbar .wrap svg{vertical-align:-2px;margin-right:4px}
+.topbar .hours svg{margin-right:4px;vertical-align:-2px}
+svg.lucide{display:inline-block;vertical-align:middle}
+.burger svg{display:block}
+@media(max-width:600px){.topbar .wrap{gap:10px;padding:6px 10px;font-size:10.5px}.topbar .wrap .hours span{display:none}.hero-inner{padding:80px 20px 120px}.hero-cap{display:none}}
 .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
 header.site{position:sticky;top:0;z-index:50;background:rgba(15,36,64,.92);backdrop-filter:blur(10px);color:#fff;border-bottom:1px solid rgba(255,255,255,.1)}
 .nav{display:flex;align-items:center;gap:14px;padding:12px 20px;max-width:1180px;margin:0 auto}
@@ -65,8 +70,10 @@ section.block{padding-block:64px}
 .split p.lead{font-size:17.5px;line-height:1.7;color:var(--ink);font-weight:500}
 .split p.mut{color:var(--mut)}
 .split img.frame{width:100%;border-radius:18px;object-fit:cover;aspect-ratio:4/3;display:block;box-shadow:0 12px 32px rgba(16,28,44,.12)}
-.split ul{line-height:1.9;padding-left:1.3em;margin:1.2em 0}
-.split ul li{color:var(--ink)}
+.split ul{list-style:none;padding-left:0;margin:1.2em 0}
+.split ul li{display:flex;align-items:center;gap:9px;color:var(--ink)}
+.split ul li svg{color:var(--red);flex:0 0 auto}
+footer a svg,footer p svg{vertical-align:-2px;margin-right:4px}
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
 .scard{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 6px 20px rgba(16,28,44,.06);transition:.2s}
 .scard:hover{transform:translateY(-4px);box-shadow:0 16px 34px rgba(16,28,44,.12)}
@@ -74,6 +81,7 @@ section.block{padding-block:64px}
 .scard h3{font-size:18px;margin-bottom:10px;line-height:1.3}.scard p{color:var(--mut);font-size:14.5px;line-height:1.65;margin:0}
 .scard a{color:var(--navy);font-weight:700;text-decoration:none;border-bottom:1px solid var(--cream)}
 .scard a:hover{color:var(--red);border-bottom-color:var(--red)}
+.scard h3 svg{color:var(--red);vertical-align:-3px;margin-right:6px}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
 .job{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;transition:.2s}
 .job:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(16,28,44,.14)}
@@ -118,13 +126,13 @@ form.card button{margin-top:18px}
 </style>
 </head>
 <body>
-<div class="topbar"><div class="wrap"><a class="tel" href="tel:01933422290">📞 01933 422290</a><span>🕢 Mon–Fri 07:30–17:30 · Sat by appointment</span></div></div>
+<div class="topbar"><div class="wrap"><a class="tel" href="tel:01933422290"><Phone size={14} /> 01933 422290</a><span class="hours"><Clock size={14} /> Mon–Fri 07:30–17:30 <span>· Sat by appointment</span></span></div></div>
 <header class="site"><div class="nav">
 <a class="brand" href={`${base}`}><img src={`${base}logo.png`} alt="JH Paintworx logo" width="1024" height="880" /><span><b>JH PAINTWORX</b><small>Passion for paint</small></span></a>
-<button class="burger" onclick="document.querySelector('.links').classList.toggle('open')">☰</button>
+<button class="burger" aria-label="Menu" onclick="document.querySelector('.links').classList.toggle('open')"><Menu size={22} /></button>
 <nav class="links">
 <a href={`${base}`}>Home</a>
-<a href={`${base}gallery/`}>Paint Work</a>
+<a href={`${base}gallery/`}>Gallery</a>
 <a href={`${base}services/`}>Services</a>
 <a href={`${base}about/`}>About</a>
 <a href={`${base}contact/`} class="cta">Get a quote</a>
@@ -133,7 +141,7 @@ form.card button{margin-top:18px}
 <slot />
 <footer>
 <div class="cols">
-<div><h4>JH PAINTWORX LTD</h4><p>Showroom paintwork, panel repair and custom refinishing for cars, bikes, vans, commercials, plant and classics.</p><p><a class="tel" href="tel:01933422290">📞 01933 422290</a><br />🕗 Mon–Fri 07:30–17:30</p></div>
+<div><h4>JH PAINTWORX LTD</h4><p>Showroom paintwork, panel repair and custom refinishing for cars, bikes, vans, commercials, plant and classics.</p><p><a class="tel" href="tel:01933422290"><Phone size={15} /> 01933 422290</a><br /><Clock size={15} /> Mon–Fri 07:30–17:30</p></div>
 <div><h4>EXPLORE</h4><p><a href={`${base}gallery/`}>Gallery</a><br /><a href={`${base}gallery/car/`}>Cars</a> · <a href={`${base}gallery/bike/`}>Bikes</a> · <a href={`${base}gallery/commercial/`}>Commercial</a><br /><a href={`${base}services/`}>Services</a><br /><a href={`${base}contact/`}>Contact</a></p></div>
 <div><h4>WORKSHOP</h4><p><a href={`${base}about/`}>About us</a><br /><a href={`${base}admin/`}>Staff login (CMS)</a></p></div>
 </div>

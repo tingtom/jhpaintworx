@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { Phone, MapPin } from 'lucide-astro';
 const email = import.meta.env.PUBLIC_CONTACT_EMAIL ?? '';
 ---
 <Base title="Contact – get a quote">
@@ -7,8 +8,8 @@ const email = import.meta.env.PUBLIC_CONTACT_EMAIL ?? '';
   <div class="section-head"><p class="kicker">CONTACT</p><h1>Get a quote.</h1><p class="sub">Send a few photos of the vehicle and the damage — they get the fastest, most accurate quotes.</p></div>
   <div class="split wrap">
     <div>
-      <div class="scard"><h3>📞 <a href="tel:01933422290">01933 422290</a></h3><p>Mon–Fri 07:30–17:30 · Sat by appointment. Happy to talk through the job before you book.</p></div>
-      <div class="scard" style="margin-top:14px"><h3>📍 Workshop</h3><p>Message us for the drop-off address and current lead time — fleet slots available.</p></div>
+      <div class="scard"><h3><Phone size={20} /> <a href="tel:01933422290">01933 422290</a></h3><p>Mon–Fri 07:30–17:30 · Sat by appointment. Happy to talk through the job before you book.</p></div>
+      <div class="scard" style="margin-top:14px"><h3><MapPin size={20} /> Workshop</h3><p>Message us for the drop-off address and current lead time — fleet slots available.</p></div>
     </div>
     <form class="card" id="qform">
       <label>Your name<input name="name" required placeholder="Jane Bloggs" autocomplete="name" /></label>

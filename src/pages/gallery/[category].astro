@@ -13,9 +13,9 @@ const jobs = await getCollection('jobs');
 const list = jobs.filter(j=>j.data.category===category);
 const img = (j: any) => j.data.image ?? `https://picsum.photos/seed/${j.slug}/800/600`;
 ---
-<Base title={`${TITLES[category]} paint work`}>
+<Base title={`${TITLES[category]} gallery`}>
 <section class="block">
-  <div class="section-head"><p class="kicker">GALLERY / {LABELS[category].toUpperCase()}</p><h1>{TITLES[category]} paintwork.</h1></div>
+  <div class="section-head"><p class="kicker">GALLERY / {LABELS[category].toUpperCase()}</p><h1>{TITLES[category]} gallery.</h1></div>
   <div class="pills wrap">
     {cats.map(c => (
       <a class={category===c?'on':''} href={c==='all'?`${base}gallery/`:`${base}gallery/${c}/`}>{LABELS[c]}</a>

@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import HeroSlider from '../components/HeroSlider.astro';
 import { getCollection } from 'astro:content';
+import { Truck, Tractor, Sparkles, Hammer, Crosshair, Factory } from 'lucide-astro';
 const base = import.meta.env.BASE_URL;
 const jobs = await getCollection('jobs');
 const featured = jobs.filter(j => j.data.featured).slice(0, 6);
@@ -16,12 +17,12 @@ const LABELS: Record<string,string> = { all:'All', car:'Cars', bike:'Bikes', van
 <section class="block">
   <div class="section-head"><p class="kicker">WHAT WE DO</p><h2>Everything short of building the car.</h2><p class="sub">Six core services — every job gets the same prep discipline.</p></div>
   <div class="cards wrap">
-    <div class="scard"><div class="ic">🚚</div><h3>Commercial Vehicle Paintwork</h3><p>Fleet cabs, vans and HGVs in hard-wearing 2-pack colour. Minimal downtime, matched to livery.</p></div>
-    <div class="scard"><div class="ic">🚜</div><h3>Plant & Machinery</h3><p>Diggers, trailers and hire fleet rub-downs and repaints that survive site life.</p></div>
-    <div class="scard"><div class="ic">✨</div><h3>Full Resprays</h3><p>Bare-metal prep, colour changes and glass-out jobs with a deep, flat finish.</p></div>
-    <div class="scard"><div class="ic">🔨</div><h3>Panel Beating & Repairs</h3><p>Dents, scratches and scuffs repaired and blended — invisible, not "near enough".</p></div>
-    <div class="scard"><div class="ic">🎯</div><h3>Expert Colour Matching</h3><p>Spectrometer readings plus spray-out cards so metallics and pearls actually match.</p></div>
-    <div class="scard"><div class="ic">🏭</div><h3>Welding & Restoration</h3><p>Sills, arches and classic shells repaired properly before a drop of paint goes on.</p></div>
+    <div class="scard"><div class="ic"><Truck size={24} /></div><h3>Commercial Vehicle Paintwork</h3><p>Fleet cabs, vans and HGVs in hard-wearing 2-pack colour. Minimal downtime, matched to livery.</p></div>
+    <div class="scard"><div class="ic"><Tractor size={24} /></div><h3>Plant & Machinery</h3><p>Diggers, trailers and hire fleet rub-downs and repaints that survive site life.</p></div>
+    <div class="scard"><div class="ic"><Sparkles size={24} /></div><h3>Full Resprays</h3><p>Bare-metal prep, colour changes and glass-out jobs with a deep, flat finish.</p></div>
+    <div class="scard"><div class="ic"><Hammer size={24} /></div><h3>Panel Beating & Repairs</h3><p>Dents, scratches and scuffs repaired and blended — invisible, not "near enough".</p></div>
+    <div class="scard"><div class="ic"><Crosshair size={24} /></div><h3>Expert Colour Matching</h3><p>Spectrometer readings plus spray-out cards so metallics and pearls actually match.</p></div>
+    <div class="scard"><div class="ic"><Factory size={24} /></div><h3>Welding & Restoration</h3><p>Sills, arches and classic shells repaired properly before a drop of paint goes on.</p></div>
   </div>
 </section>
 
