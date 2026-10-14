@@ -4,7 +4,7 @@ hours: Mon - Fri 08:00 - 16:00
 address: Unit 1 & 3, Mere Farm, Hargrave, Raunds, Wellingborough NN9 6BB
 email: ''
 facebook: https://www.facebook.com/jhpaintworx/
-instagram: ''
+instagram: https://www.instagram.com/jhpaintworx/
 mapLat: 52
 mapLon: 0
 ---
