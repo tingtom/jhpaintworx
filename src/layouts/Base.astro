@@ -1,5 +1,5 @@
 ---
-import { Phone, Clock, Menu, Facebook, Instagram } from 'lucide-astro';
+import { Phone, Clock, Menu, Facebook, Instagram, MapPin } from 'lucide-astro';
 import { getCollection } from 'astro:content';
 interface Props { title: string; description?: string; }
 const { title, description = 'JH Paintworx – showroom paintwork for cars, bikes, commercials, plant & classics. Colour matching, panel repair, full resprays.' } = Astro.props;
@@ -134,6 +134,7 @@ footer .cols{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;padding:44px 
 footer h4{color:#fff;margin:0 0 14px;font-size:13px;letter-spacing:.14em;font-weight:800}
 footer h4 .copy{font-size:11px;font-weight:600;color:#8fa3bb;letter-spacing:0;margin-left:8px}
 footer .fsocial{display:flex;gap:10px;margin:14px 0 0}
+footer .addr{white-space:pre-line}
 footer .fsocial a{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.25);color:#d6e0ec;transition:.15s}
 footer .fsocial a:hover{background:var(--red);border-color:var(--red);color:#fff}
 footer p{line-height:1.9;margin:0 0 .8em}
@@ -185,7 +186,7 @@ form.card button{margin-top:18px}
 <slot />
 <footer>
 <div class="cols">
-<div><h4>JH PAINTWORX LTD <span class="copy">© {new Date().getFullYear()}</span></h4><p>Showroom paintwork, panel repair and custom refinishing for cars, bikes, vans, commercials, plant and classics.</p><p><a class="tel" href={tel}><Phone size={15} /> {phone}</a><br /><Clock size={15} /> {hours}</p>
+<div><h4>JH PAINTWORX LTD <span class="copy">© {new Date().getFullYear()}</span></h4><p>Showroom paintwork, panel repair and custom refinishing for cars, bikes, vans, commercials, plant and classics.</p><p><a class="tel" href={tel}><Phone size={15} /> {phone}</a><br /><Clock size={15} /> {hours}</p>{settings?.address && <p class="addr"><MapPin size={15} /> {settings.address}</p>}
   {social.length > 0 && (
     <p class="fsocial">
       {social.map(s => { const I = s.Icon; return (

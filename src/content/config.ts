@@ -93,6 +93,8 @@ const settings = defineCollection({
     email: z.string().default(''),
     facebook: z.string().default(''),
     instagram: z.string().default(''),
+    mapLat: z.coerce.number().optional(),
+    mapLon: z.coerce.number().optional(),
   }),
 });
 
