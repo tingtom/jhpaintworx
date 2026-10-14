@@ -37,7 +37,7 @@ header.site{position:sticky;top:0;z-index:50;background:rgba(15,36,64,.92);backd
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
 .brand img{height:52px;width:auto;max-width:190px;object-fit:contain;display:block}
 .brand b{font-family:Archivo;font-size:19px;letter-spacing:.04em}
-.brand small{display:block;font-size:11px;letter-spacing:.28em;color:var(--cream);font-weight:700}
+.brand small{display:block;font-size:11px;letter-spacing:.14em;color:var(--cream);font-weight:700;text-transform:capitalize}
 .links{margin-left:auto;display:flex;gap:4px;align-items:center}
 .links a{text-decoration:none;font-weight:600;font-size:14px;padding:9px 13px;border-radius:9px;opacity:.92}
 .links a:hover{background:rgba(255,255,255,.12);opacity:1}
@@ -120,7 +120,7 @@ form.card button{margin-top:18px}
 <body>
 <div class="topbar"><div class="wrap"><a class="tel" href="tel:01933422290">📞 01933 422290</a><span>🕢 Mon–Fri 07:30–17:30 · Sat by appointment</span></div></div>
 <header class="site"><div class="nav">
-<a class="brand" href={`${base}`}><img src={`${base}logo.png`} onerror={`this.onerror=null;this.src='${base}logo.svg'`} alt="JH Paintworx logo" /><span><b>JH PAINTWORX</b><small>SPRAY · REPAIR · REFINISH</small></span></a>
+<a class="brand" href={`${base}`}><img src={`${base}logo.png`} alt="JH Paintworx logo" width="1024" height="880" /><span><b>JH PAINTWORX</b><small>Passion for paint</small></span></a>
 <button class="burger" onclick="document.querySelector('.links').classList.toggle('open')">☰</button>
 <nav class="links">
 <a href={`${base}`}>Home</a>
