@@ -1,5 +1,5 @@
 ---
-// Hero slider — full-width, auto-advancing, swipable, arrows on desktop.
+// Hero slider — full-width, auto-advancing, swipable, dot navigation.
 // Slides are CMS-editable: src/content/slides/*.md (Homepage hero slides).
 import { getCollection } from 'astro:content';
 const base = import.meta.env.BASE_URL;
@@ -14,6 +14,10 @@ const cms = await getCollection('slides');
 const slides = (cms.length ? cms : fallback)
   .sort((a, b) => a.data.order - b.data.order);
 
+const settings = (await getCollection('settings'))[0]?.data;
+const phone = settings?.phone || '01933 422290';
+const tel = `tel:${phone.replace(/[^\+\d]/g, '')}`;
+
 const first = slides[0].data;
 const payload = slides.map(s => ({ title: s.data.title, text: s.data.text, caption: s.data.caption ?? '' }));
 ---
@@ -26,12 +30,10 @@ const payload = slides.map(s => ({ title: s.data.title, text: s.data.text, capti
     <h1 class="hero-title" id="hero-title">{first.title}</h1>
     <p class="hero-lead" id="hero-lead">{first.text}</p>
     <div class="btnrow">
-      <a class="btn" href={`${base}gallery/`}>View the gallery →</a>
-      <a class="btn ghost" href={`${base}contact/`}>Get a quote · 01933 422290</a>
+      <a class="btn" href={`${base}workshop/`}>See our work →</a>
+      <a class="btn ghost" href={`${base}contact/`}>Get a quote · {phone}</a>
     </div>
     <div class="hero-cap" id="hero-cap">{first.caption}</div>
-    <button class="hero-arrow prev" id="hero-prev" aria-label="Previous slide">‹</button>
-    <button class="hero-arrow next" id="hero-next" aria-label="Next slide">›</button>
     <div class="hero-dots" id="hero-dots">
       {slides.map((_, i) => <button class={i === 0 ? 'on' : ''} data-i={i} aria-label={`Slide ${i + 1}`} />)}
     </div>
@@ -47,14 +49,11 @@ const payload = slides.map(s => ({ title: s.data.title, text: s.data.text, capti
 .hero-title span{color:var(--cream)}
 .hero-lead{font-size:clamp(15px,2vw,19px);color:#dbe4ef;max-width:56ch;line-height:1.6;margin:0 0 4px}
 .hero-cap{position:absolute;top:24px;right:20px;z-index:3;font-size:13px;font-weight:600;color:#cfe0f5;letter-spacing:.04em;max-width:40ch;text-align:right}
-.hero-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:4;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(11,22,38,.45);color:#fff;font-size:26px;line-height:1;cursor:pointer;display:grid;place-items:center;transition:.2s;backdrop-filter:blur(4px)}
-.hero-arrow:hover{background:var(--red);border-color:var(--red)}
-.hero-arrow.prev{left:14px}.hero-arrow.next{right:14px}
 .hero-dots{position:absolute;bottom:24px;right:20px;z-index:3;display:flex;gap:8px}
 .hero-dots button{width:34px;height:4px;border-radius:2px;background:rgba(255,255,255,.35);border:0;cursor:pointer;transition:.3s}
 .hero-dots button.on{background:var(--cream);width:46px}
 .btnrow{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
-@media(max-width:600px){.hero{min-height:380px}.hero-inner{padding-bottom:70px}.hero-cap{display:none}.hero-arrow{width:36px;height:36px;font-size:20px}}
+@media(max-width:600px){.hero{min-height:380px}.hero-inner{padding-bottom:70px}.hero-cap{display:none}}
 </style>
 <script define:vars={{ payload }}>
   const hero = document.getElementById('hero');
@@ -78,8 +77,6 @@ const payload = slides.map(s => ({ title: s.data.title, text: s.data.text, capti
   const start = () => { timer = setInterval(next, 4500); };
   const stop = () => clearInterval(timer);
   dots.forEach((d) => d.addEventListener('click', () => { stop(); show(+d.dataset.i); start(); }));
-  document.getElementById('hero-next').addEventListener('click', () => { stop(); next(); start(); });
-  document.getElementById('hero-prev').addEventListener('click', () => { stop(); prev(); start(); });
   hero.addEventListener('mouseenter', stop);
   hero.addEventListener('mouseleave', start);
   hero.addEventListener('touchstart', (e) => { stop(); hero._sx = e.touches[0].clientX; }, { passive: true });
