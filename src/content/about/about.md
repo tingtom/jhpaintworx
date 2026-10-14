@@ -8,7 +8,7 @@ image: https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1000&
 team:
   - name: Joe
     role: Owner / lead sprayer
-    photo: ''
+    photo: https://picsum.photos/id/841/1920/1280.webp
     blurb: Thirty-odd years round the booth. Colour matching, glass-out resprays and the final cut-and-polish.
   - name: Hannah
     role: Workshop coordinator
