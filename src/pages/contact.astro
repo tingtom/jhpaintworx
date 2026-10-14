@@ -4,19 +4,19 @@ const email = import.meta.env.PUBLIC_CONTACT_EMAIL ?? '';
 ---
 <Base title="Contact – get a quote">
 <section class="block">
-  <div class="section-head"><p class="kicker">CONTACT</p><h1>Get a quote.</h1></div>
+  <div class="section-head"><p class="kicker">CONTACT</p><h1>Get a quote.</h1><p class="sub">Send a few photos of the vehicle and the damage — they get the fastest, most accurate quotes.</p></div>
   <div class="split wrap">
     <div>
-      <div class="scard"><h3>📞 01933 422290</h3><p>Mon–Fri 07:30–17:30 · Sat by appointment. Photos get the fastest, most accurate quotes.</p></div>
-      <div class="scard" style="margin-top:14px"><h3>📍 Workshop</h3><p>Message for the drop-off address and current lead time — fleet slots available.</p></div>
+      <div class="scard"><h3>📞 <a href="tel:01933422290">01933 422290</a></h3><p>Mon–Fri 07:30–17:30 · Sat by appointment. Happy to talk through the job before you book.</p></div>
+      <div class="scard" style="margin-top:14px"><h3>📍 Workshop</h3><p>Message us for the drop-off address and current lead time — fleet slots available.</p></div>
     </div>
     <form class="card" id="qform">
-      <label>Your name<input name="name" required placeholder="Jane Bloggs" /></label>
-      <label>Phone<input name="phone" required placeholder="07…" /></label>
+      <label>Your name<input name="name" required placeholder="Jane Bloggs" autocomplete="name" /></label>
+      <label>Phone<input name="phone" type="tel" required placeholder="07…" autocomplete="tel" /></label>
       <label>Vehicle / job type<select name="category"><option>car</option><option>bike</option><option>van</option><option>commercial</option><option>plant</option><option>classic</option></select></label>
       <label>Details<textarea name="message" rows="5" required placeholder="e.g. Focus ST bonnet + bumper stone chips, photos to follow…"></textarea></label>
       <button class="btn" type="submit">Send enquiry →</button>
-      <p id="status" style="font-size:14px"></p>
+      <p id="status"></p>
     </form>
   </div>
 </section>

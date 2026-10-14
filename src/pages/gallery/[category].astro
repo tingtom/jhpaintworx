@@ -29,7 +29,7 @@ const img = (j: any) => j.data.image ?? `https://picsum.photos/seed/${j.slug}/80
       </article>
     ))}
   </div>
-  {list.length===0 && <p style="padding:0 20px">No {TITLES[category]} jobs yet — add some via <a href={`${base}admin/`}>Admin</a>.</p>}
-  <p style="padding:0 20px;margin-top:20px"><a href={`${base}gallery/`}>← All work</a> · <a href={`${base}contact/`}>Get a quote for your {TITLES[category]} →</a></p>
+  {list.length===0 && <p style="padding:0 20px;color:var(--mut)">No {TITLES[category]} jobs yet — add some via <a href={`${base}admin/`}>Admin</a>.</p>}
+  <p style="padding:0 20px;margin-top:24px;color:var(--mut)"><a href={`${base}gallery/`} style="font-weight:700">← All work</a> · <a href={`${base}contact/`} style="font-weight:700">Get a quote for your {TITLES[category]} →</a></p>
 </section>
 </Base>

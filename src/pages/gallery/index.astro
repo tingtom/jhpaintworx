@@ -23,6 +23,6 @@ const img = (j: any) => j.data.image ?? `https://picsum.photos/seed/${j.slug}/80
       </article>
     ))}
   </div>
-  {jobs.length===0 && <p style="padding:0 20px">No jobs yet — add some via <a href={`${base}admin/`}>Admin</a>.</p>}
+  {jobs.length===0 && <p style="padding:0 20px;color:var(--mut)">No jobs yet — add some via <a href={`${base}admin/`}>Admin</a>.</p>}
 </section>
 </Base>
