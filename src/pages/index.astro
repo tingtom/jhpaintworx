@@ -11,9 +11,6 @@ const img = (j: any) => j.data.image ?? `https://picsum.photos/seed/${j.slug}/80
 const cats = (await getCollection('categories')).sort((a, b) => a.data.order - b.data.order);
 const labels: Record<string,string> = {};
 cats.forEach(c => labels[c.slug] = c.data.label);
-const settings = (await getCollection('settings'))[0]?.data;
-const phone = settings?.phone || '01933 422290';
-const hours = settings?.hours || 'Mon–Fri 07:30–17:30';
 
 const ICONS = { truck: Truck, tractor: Tractor, sparkles: Sparkles, hammer: Hammer, crosshair: Crosshair, factory: Factory } as Record<string, any>;
 const cmsServices = await getCollection('services');
@@ -71,17 +68,5 @@ const services = cmsServices.sort((a, b) => a.data.order - b.data.order);
       <a href={`${base}workshop/${c.slug}/`}>{c.data.label}</a>
     ))}
   </div>
-</section>
-
-<!-- PROCESS -->
-<section class="block" style="background:#0f2440;color:#fff">
-  <div class="section-head"><p class="kicker" style="color:var(--cream)">HOW IT WORKS</p><h2>Straightforward, no surprises.</h2></div>
-  <div class="steps wrap">
-    <div class="step"><b>01</b><h3>Send photos</h3><p>Message or call {phone} with photos of the vehicle and damage.</p></div>
-    <div class="step"><b>02</b><h3>Fixed quote</h3><p>Honest price for prep, paint and materials — agreed before we start.</p></div>
-    <div class="step"><b>03</b><h3>Prep & paint</h3><p>Strip, fill, prime, flat, paint, lacquer, cut and polish.</p></div>
-    <div class="step"><b>04</b><h3>Collect & gleam</h3><p>Checked in daylight, finished details dressed, ready to show.</p></div>
-  </div>
-  <div class="cta-band wrap center"><div><h2>Get your paintwork booked in.</h2><p>Call {phone} · {hours}, or send photos for a fast quote.</p></div><a class="btn light" href={`${base}contact/`}>Request a quote →</a></div>
 </section>
 </Base>

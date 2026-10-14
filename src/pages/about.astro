@@ -10,6 +10,7 @@ const { Content } = entry ? await entry.render() : { Content: null };
 <Base title="Meet the team">
 <section class="block">
   <div class="section-head"><p class="kicker">{d?.kicker ?? 'ABOUT US'}</p><h1>{d?.title ?? 'A paint shop that sweats the prep.'}</h1><p class="sub">{d?.sub ?? ''}</p></div>
+  {d?.image && <div class="wrap"><img class="banner" src={d.image} alt="JH Paintworx workshop" loading="lazy" /></div>}
   <div class="split wrap">
     <div>
       {d?.lead && <p class="lead">{d.lead}</p>}
@@ -21,38 +22,32 @@ const { Content } = entry ? await entry.render() : { Content: null };
       {Content && <div class="about-body"><Content /></div>}
       <p><a class="btn" href={`${base}workshop/`}>See the proof →</a></p>
     </div>
-    <div>
-      <img class="frame" src={d?.image || 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1000&auto=format&fit=crop'} alt="Workshop paintwork" loading="lazy" />
+    <div class="teamcol">
+      <p class="kicker">THE TEAM</p>
+      {d?.team?.length ? d.team.map(m => (
+        <div class="scard tcard">
+          {m.photo && <img src={m.photo} alt={m.name} loading="lazy" />}
+          <div class="who">
+            <h3>{m.name}</h3>
+            {m.role && <p class="role">{m.role}</p>}
+            {m.blurb && <p>{m.blurb}</p>}
+          </div>
+        </div>
+      )) : <p class="mut">Add team members in Admin to populate this list.</p>}
     </div>
   </div>
-  {d?.team?.length ? (
-    <div class="wrap">
-      <div class="section-head" style="padding:0;margin:28px 0 0"><p class="kicker">THE TEAM</p><h2>Who you'll be dealing with.</h2></div>
-      <div class="team">
-        {d.team.map(m => (
-          <div class="scard tcard">
-            {m.photo && <img src={m.photo} alt={m.name} loading="lazy" />}
-            <div class="who">
-              <h3>{m.name}</h3>
-              {m.role && <p class="role">{m.role}</p>}
-              {m.blurb && <p>{m.blurb}</p>}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  ) : null}
 </section>
 <style>
+.banner{width:100%;height:min(260px,34vw);object-fit:cover;border-radius:18px;margin-top:22px;box-shadow:0 12px 32px rgba(16,28,44,.12);display:block}
 .about-body p{color:var(--mut);line-height:1.75}
-.team{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px}
-.tcard{padding:0;overflow:hidden}
-.tcard img{width:100%;aspect-ratio:4/3;object-fit:cover;background:#dde3ea;display:block}
-.tcard .who{padding:18px}
-.tcard h3{font-size:17px;margin:0 0 2px}
-.tcard .role{color:var(--red);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin:0 0 8px}
-.tcard p{color:var(--mut);font-size:14px;line-height:1.6;margin:0}
-@media(max-width:900px){.team{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:600px){.team{grid-template-columns:1fr}}
+.teamcol{display:flex;flex-direction:column;gap:14px}
+.teamcol .kicker{margin:0 0 2px}
+.tcard{display:flex;gap:14px;align-items:flex-start;padding:14px}
+.tcard img{width:92px;height:92px;object-fit:cover;border-radius:12px;flex:0 0 auto;background:#dde3ea}
+.tcard .who{min-width:0}
+.tcard h3{font-size:16.5px;margin:0 0 2px}
+.tcard .role{color:var(--red);font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin:0 0 6px}
+.tcard p{color:var(--mut);font-size:13.5px;line-height:1.55;margin:0}
+@media(max-width:800px){.tcard img{width:72px;height:72px}}
 </style>
 </Base>
