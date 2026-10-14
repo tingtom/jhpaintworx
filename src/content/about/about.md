@@ -4,7 +4,6 @@ title: Meet the team behind the paint.
 sub: A small, hands-on workshop - the people who quote your job are the people who paint it.
 lead: At JH Paintworx we refresh, restore and reimagine vehicles with flawless finishes and obsessive attention to detail. From commercial fleets and plant-hire machinery to cherished classics, the team is committed to outstanding results every time.
 points: []
-image: https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1000&auto=format&fit=crop
 team:
   - name: Joe
     role: Owner / lead sprayer

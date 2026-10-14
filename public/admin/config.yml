@@ -45,7 +45,7 @@ collections:
     fields:
       - { label: Title, name: title, widget: string }
       - { label: Category, name: category, widget: select, options: [cars, classics-historic, commercial, motorcycles, motorsport], hint: "Match the slug of a Workshop category" }
-      - { label: Cover image, name: image, widget: image, required: false }
+      - { label: Images, name: images, widget: image, multiple: true, required: false, hint: "Add several — the workshop page shows left/right arrows to browse them" }
       - { label: Date, name: date, widget: datetime, required: false }
       - { label: Featured on homepage, name: featured, widget: boolean, default: false }
       - { label: Description, name: description, widget: text, required: false }
@@ -74,7 +74,6 @@ collections:
           - { label: Lead paragraph, name: lead, widget: text, required: false }
           - { label: Bullet points, name: points, widget: list, required: false }
           - { label: Extra copy, name: body, widget: markdown, required: false }
-          - { label: Photo, name: image, widget: image, required: false }
           - label: Team members
             name: team
             widget: list
@@ -107,3 +106,5 @@ collections:
           - { label: Opening hours, name: hours, widget: string, hint: "Shown in the top bar" }
           - { label: Address, name: address, widget: text, required: false }
           - { label: Contact form email, name: email, widget: string, required: false, hint: "Fallback for the form if the build variable isn't set" }
+          - { label: Facebook URL, name: facebook, widget: string, required: false, hint: "Leave blank to hide the Facebook icon" }
+          - { label: Instagram URL, name: instagram, widget: string, required: false, hint: "Leave blank to hide the Instagram icon" }

@@ -16,6 +16,8 @@ const jobs = defineCollection({
     // Category is a slug that must match a file in src/content/categories
     // (managed under "Workshop categories" in the CMS).
     category: z.string().default(''),
+    // One or more images; the workshop cards show arrows to browse them.
+    images: z.array(z.string()).default([]),
     image: z.string().optional(),
     date: z.coerce.date().optional(),
     featured: z.boolean().default(false),
@@ -62,7 +64,6 @@ const about = defineCollection({
     sub: z.string().default(''),
     lead: z.string().default(''),
     points: z.array(z.string()).default([]),
-    image: z.string().optional(),
     team: z.array(z.object({
       name: z.string(),
       role: z.string().default(''),
@@ -87,9 +88,11 @@ const settings = defineCollection({
   type: 'content',
   schema: z.object({
     phone: z.string().default('01933 422290'),
-    hours: z.string().default('Mon–Fri 07:30–17:30 · Sat by appointment'),
+    hours: z.string().default('Mon–Fri 07:30–17:30'),
     address: z.string().default(''),
     email: z.string().default(''),
+    facebook: z.string().default(''),
+    instagram: z.string().default(''),
   }),
 });
 

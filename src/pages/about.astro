@@ -10,7 +10,6 @@ const { Content } = entry ? await entry.render() : { Content: null };
 <Base title="Meet the team">
 <section class="block">
   <div class="section-head"><p class="kicker">{d?.kicker ?? 'ABOUT US'}</p><h1>{d?.title ?? 'A paint shop that sweats the prep.'}</h1><p class="sub">{d?.sub ?? ''}</p></div>
-  {d?.image && <div class="wrap"><img class="banner" src={d.image} alt="JH Paintworx workshop" loading="lazy" /></div>}
   <div class="split wrap">
     <div>
       {d?.lead && <p class="lead">{d.lead}</p>}
@@ -38,7 +37,6 @@ const { Content } = entry ? await entry.render() : { Content: null };
   </div>
 </section>
 <style>
-.banner{width:100%;height:min(260px,34vw);object-fit:cover;border-radius:18px;margin-top:22px;box-shadow:0 12px 32px rgba(16,28,44,.12);display:block}
 .about-body p{color:var(--mut);line-height:1.75}
 .teamcol{display:flex;flex-direction:column;gap:14px}
 .teamcol .kicker{margin:0 0 2px}

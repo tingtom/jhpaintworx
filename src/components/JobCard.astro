@@ -1,0 +1,52 @@
+---
+// Job card used on the workshop pages. Shows every image from the job with
+// left/right arrows — manual browsing only, no auto-advance.
+interface Props { job: any; label?: string; }
+const { job, label } = Astro.props;
+const imgs: string[] = job.data.images?.length
+  ? job.data.images
+  : job.data.image ? [job.data.image] : [];
+---
+<article class="job">
+  <div class="im">
+    {imgs.map((src, i) => (
+      <img class:list={['slide', { on: i === 0 }]} data-i={i} src={src} alt={job.data.title} loading={i === 0 ? 'eager' : 'lazy'} />
+    ))}
+    {imgs.length > 1 && (
+      <>
+        <button class="jarrow prev" type="button" aria-label="Previous image">‹</button>
+        <button class="jarrow next" type="button" aria-label="Next image">›</button>
+        <span class="jcount"><b>1</b>/{imgs.length}</span>
+      </>
+    )}
+    <span class="cat">{label ?? job.data.category}</span>
+  </div>
+  <div class="p"><h3>{job.data.title}</h3><p>{job.data.description ?? ''}</p></div>
+</article>
+<style>
+.job .im .slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .35s ease}
+.job .im .slide.on{opacity:1}
+.jarrow{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.5);background:rgba(11,22,38,.5);color:#fff;font-size:20px;line-height:1;cursor:pointer;display:grid;place-items:center;transition:.2s;backdrop-filter:blur(4px)}
+.jarrow:hover{background:var(--red);border-color:var(--red)}
+.jarrow.prev{left:8px}.jarrow.next{right:8px}
+.jcount{position:absolute;right:8px;bottom:8px;z-index:3;font-size:11px;font-weight:700;color:#fff;background:rgba(11,22,38,.55);border-radius:999px;padding:3px 8px;letter-spacing:.04em}
+.jcount b{color:var(--cream)}
+@media(max-width:600px){.jarrow{width:30px;height:30px;font-size:17px}}
+</style>
+<script>
+  document.querySelectorAll('.job .im').forEach((im) => {
+    const slides = Array.from(im.querySelectorAll('.slide'));
+    if (slides.length < 2) return;
+    const count = im.querySelector('.jcount b');
+    let i = 0;
+    const show = (n: number) => {
+      i = (n + slides.length) % slides.length;
+      slides.forEach((s, k) => s.classList.toggle('on', k === i));
+      if (count) count.textContent = String(i + 1);
+    };
+    const prev = im.querySelector('.jarrow.prev');
+    const next = im.querySelector('.jarrow.next');
+    prev?.addEventListener('click', () => show(i - 1));
+    next?.addEventListener('click', () => show(i + 1));
+  });
+</script>

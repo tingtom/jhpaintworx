@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import JobCard from '../../components/JobCard.astro';
 import { getCollection } from 'astro:content';
 export async function getStaticPaths() {
   const cats = (await getCollection('categories')).sort((a, b) => a.data.order - b.data.order);
@@ -13,7 +14,6 @@ cats.forEach(c => labels[c.slug] = c.data.label);
 const heading = cat.data.title || cat.data.label;
 const jobs = await getCollection('jobs');
 const list = jobs.filter(j => j.data.category === cat.slug);
-const img = (j: any) => j.data.image ?? `https://picsum.photos/seed/${j.slug}/800/600`;
 ---
 <Base title={`${heading} workshop`}>
 <section class="block">
@@ -26,10 +26,7 @@ const img = (j: any) => j.data.image ?? `https://picsum.photos/seed/${j.slug}/80
   </div>
   <div class="grid wrap">
     {list.map(j => (
-      <article class="job">
-        <div class="im"><img src={img(j)} alt={j.data.title} loading="lazy" /><span class="cat">{labels[j.data.category] ?? j.data.category}</span></div>
-        <div class="p"><h3>{j.data.title}</h3><p>{j.data.description ?? ''}</p></div>
-      </article>
+      <JobCard job={j} label={labels[j.data.category] ?? j.data.category} />
     ))}
   </div>
   {list.length===0 && <p style="padding:0 20px;color:var(--mut)">No {heading.toLowerCase()} jobs yet — add some via <a href={`${base}admin/`}>Admin</a>.</p>}

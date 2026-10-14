@@ -1,5 +1,5 @@
 ---
-import { Phone, Clock, Menu } from 'lucide-astro';
+import { Phone, Clock, Menu, Facebook, Instagram } from 'lucide-astro';
 import { getCollection } from 'astro:content';
 interface Props { title: string; description?: string; }
 const { title, description = 'JH Paintworx – showroom paintwork for cars, bikes, commercials, plant & classics. Colour matching, panel repair, full resprays.' } = Astro.props;
@@ -12,6 +12,10 @@ const phone = settings?.phone || '01933 422290';
 const tel = `tel:${phone.replace(/[^\+\d]/g, '')}`;
 const hours = settings?.hours || 'Mon–Fri 07:30–17:30';
 const cats = (await getCollection('categories')).sort((a, b) => a.data.order - b.data.order);
+const social = ([
+  { label: 'Facebook', url: settings?.facebook, Icon: Facebook },
+  { label: 'Instagram', url: settings?.instagram, Icon: Instagram },
+] as const).filter(s => s.url);
 ---
 <!doctype html>
 <html lang="en-GB">
@@ -37,14 +41,19 @@ section.block p a:not(.btn):hover{color:var(--red);text-decoration-color:var(--r
 ul,ol{line-height:1.8;margin:0 0 1em;padding-left:1.4em}
 li{margin-bottom:.4em}
 .topbar{background:var(--red);color:#fff;font-size:13px;font-weight:600;white-space:nowrap}
-.topbar .wrap{display:flex;gap:18px;justify-content:center;padding:7px 16px;align-items:center;font-size:12.5px}
+.topbar .wrap{display:flex;gap:40px;justify-content:center;position:relative;padding:7px 16px;align-items:center;font-size:12.5px}
 .topbar .wrap a{color:#fff;text-decoration:none;font-weight:700}
 .topbar .wrap a:hover{text-decoration:underline}
-.topbar .wrap svg{vertical-align:-2px;margin-right:4px}
+.topbar .social{position:absolute;left:16px;display:flex;gap:8px;align-items:center}
+.topbar .social a{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.16);transition:.15s}
+.topbar .social a:hover{background:#fff;color:var(--red);text-decoration:none}
+.topbar .social svg{display:block}
 .topbar .hours svg{margin-right:4px;vertical-align:-2px}
+.topbar .tbcontact{display:inline-flex;align-items:center;gap:32px}
+.topbar .tbcontact svg{margin-right:3px}
 svg.lucide{display:inline-block;vertical-align:middle}
 .burger svg{display:block}
-@media(max-width:600px){:root{--hdr:96px}.topbar .wrap{gap:10px;padding:6px 10px;font-size:10.5px}.topbar .wrap .hours span{display:none}.brand img{height:44px}.hero-inner{padding:80px 20px 120px}.hero-cap{display:none}}
+@media(max-width:600px){:root{--hdr:96px}.topbar .wrap{gap:8px;justify-content:space-between;padding:6px 10px;font-size:10.5px}.topbar .tbcontact{gap:8px}.topbar .social{position:static;gap:6px}.topbar .social a{width:21px;height:21px}.topbar .wrap .hours span{display:none}.brand img{height:44px}.hero-inner{padding:80px 20px 120px}.hero-cap{display:none}}
 .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
 header.site{position:sticky;top:0;z-index:50;background:rgba(15,36,64,.92);backdrop-filter:blur(10px);color:#fff;border-bottom:1px solid rgba(255,255,255,.1)}
 .nav{display:flex;align-items:center;gap:14px;padding:12px 20px;max-width:1180px;margin:0 auto}
@@ -62,9 +71,12 @@ header.site{position:sticky;top:0;z-index:50;background:rgba(15,36,64,.92);backd
 .burger{display:none;margin-left:auto;background:none;border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:8px 10px;font-size:18px}
 
 .btn{display:inline-flex;align-items:center;gap:8px;background:var(--red);color:#fff;padding:14px 22px;border-radius:12px;text-decoration:none;font-weight:800;font-size:15px;box-shadow:0 10px 24px rgba(193,39,45,.35);border:0;cursor:pointer}
-.btn:hover{background:var(--red2);transform:translateY(-1px)}
+.btn:hover{background:var(--red2)}
 .btn:focus-visible{outline:3px solid var(--cream);outline-offset:2px}
 .btn.ghost{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.35);box-shadow:none}
+.btn.ghost.dark{color:var(--navy);border-color:var(--navy);background:transparent}
+.btn.ghost.dark:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+.btn.ghost.dark:focus-visible{outline-color:var(--navy)}
 
 .strip{background:var(--cream);border-block:3px solid var(--navy);overflow:hidden;white-space:nowrap}
 .strip div{display:inline-block;padding:10px 0;font-weight:900;letter-spacing:.22em;font-size:13px;color:var(--navy);animation:slide 22s linear infinite}
@@ -118,14 +130,17 @@ section.block[style*="background"] .cta-band{margin:20px}
 .step{background:#0f2440;color:#e6edf5;border-radius:16px;padding:20px}
 .step b{color:var(--cream);font-size:13px;letter-spacing:.2em}.step h3{margin:8px 0;font-size:16px}.step p{font-size:13px;color:#b9c6d8;line-height:1.6}
 footer{background:#0b1a30;color:#aebdd1;margin-top:40px}
-footer .cols{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:24px;padding:44px 20px 36px;max-width:1180px;margin:0 auto}
+footer .cols{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;padding:44px 20px 36px;max-width:1180px;margin:0 auto}
 footer h4{color:#fff;margin:0 0 14px;font-size:13px;letter-spacing:.14em;font-weight:800}
+footer h4 .copy{font-size:11px;font-weight:600;color:#8fa3bb;letter-spacing:0;margin-left:8px}
+footer .fsocial{display:flex;gap:10px;margin:14px 0 0}
+footer .fsocial a{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.25);color:#d6e0ec;transition:.15s}
+footer .fsocial a:hover{background:var(--red);border-color:var(--red);color:#fff}
 footer p{line-height:1.9;margin:0 0 .8em}
 footer a{color:#d6e0ec;text-decoration:none;font-size:14px;border-bottom:1px solid transparent;transition:border-color .15s,color .15s}
 footer a:hover{color:var(--cream);border-bottom-color:var(--cream)}
 footer a.tel{font-weight:700;font-size:17px;color:#fff;letter-spacing:.02em}
 footer a.tel:hover{color:var(--cream)}
-.copy{border-top:1px solid rgba(255,255,255,.12);padding:16px 20px;text-align:center;font-size:13px;color:#8fa3bb}
 form.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px;max-width:640px;box-shadow:0 8px 28px rgba(16,28,44,.07)}
 form.card label{font-weight:600;font-size:14px;display:block;margin-top:16px;color:var(--ink)}
 form.card label:first-child{margin-top:0}
@@ -139,7 +154,16 @@ form.card button{margin-top:18px}
 </style>
 </head>
 <body>
-<div class="topbar"><div class="wrap"><a class="tel" href={tel}><Phone size={14} /> {phone}</a><span class="hours"><Clock size={14} /> {hours} <span>· Sat by appointment</span></span></div></div>
+<div class="topbar"><div class="wrap">
+  {social.length > 0 && (
+    <span class="social">
+      {social.map(s => { const I = s.Icon; return (
+        <a href={s.url} target="_blank" rel="noopener" aria-label={s.label} title={s.label}><I size={14} /></a>
+      ); })}
+    </span>
+  )}
+  <span class="tbcontact"><a class="tel" href={tel}><Phone size={14} /> {phone}</a><span class="hours"><Clock size={14} /> {hours} <span>· Sat by appointment</span></span></span>
+</div></div>
 <header class="site"><div class="nav">
 <a class="brand" href={`${base}`}><img src={`${base}logo.png`} alt="JH Paintworx logo" width="984" height="659" /><span><b>JH PAINTWORX</b><small>Passion for paint</small></span></a>
 <button class="burger" aria-label="Menu" onclick="document.querySelector('.links').classList.toggle('open')"><Menu size={22} /></button>
@@ -161,11 +185,17 @@ form.card button{margin-top:18px}
 <slot />
 <footer>
 <div class="cols">
-<div><h4>JH PAINTWORX LTD</h4><p>Showroom paintwork, panel repair and custom refinishing for cars, bikes, vans, commercials, plant and classics.</p><p><a class="tel" href={tel}><Phone size={15} /> {phone}</a><br /><Clock size={15} /> {hours}</p></div>
-<div><h4>EXPLORE</h4><p><a href={`${base}workshop/`}>Workshop</a><br />{cats.map((c, i) => (<Fragment><a href={`${base}workshop/${c.slug}/`}>{c.data.label}</a>{i < cats.length - 1 ? ' · ' : ''}</Fragment>))}<br /><a href={`${base}services/`}>Services</a><br /><a href={`${base}about/`}>Meet the team</a><br /><a href={`${base}contact/`}>Contact</a></p></div>
-<div><h4>WORKSHOP</h4><p><a href={`${base}about/`}>Meet the team</a><br /><a href={`${base}contact/`}>Get a quote</a></p></div>
+<div><h4>JH PAINTWORX LTD <span class="copy">© {new Date().getFullYear()}</span></h4><p>Showroom paintwork, panel repair and custom refinishing for cars, bikes, vans, commercials, plant and classics.</p><p><a class="tel" href={tel}><Phone size={15} /> {phone}</a><br /><Clock size={15} /> {hours}</p>
+  {social.length > 0 && (
+    <p class="fsocial">
+      {social.map(s => { const I = s.Icon; return (
+        <a href={s.url} target="_blank" rel="noopener" aria-label={s.label} title={s.label}><I size={17} /></a>
+      ); })}
+    </p>
+  )}
 </div>
-<div class="copy">© {new Date().getFullYear()} JH Paintworx Ltd</div>
+<div><h4>EXPLORE</h4><p>{cats.map((c, i) => (<Fragment><a href={`${base}workshop/${c.slug}/`}>{c.data.label}</a>{i < cats.length - 1 ? ' · ' : ''}</Fragment>))}<br /><a href={`${base}services/`}>Services</a><br /><a href={`${base}about/`}>Meet the team</a><br /><a href={`${base}contact/`}>Contact</a> · <a href={`${base}contact/`}>Get a quote</a></p></div>
+</div>
 </footer>
 </body>
 </html>
