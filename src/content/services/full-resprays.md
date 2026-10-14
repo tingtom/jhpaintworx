@@ -1,5 +1,7 @@
 ---
 title: Full Resprays
-order: 1
+order: 3
+icon: sparkles
+description: Glass-out, bare-metal and colour-change resprays with blocking, priming and a deep cut-and-polish.
 ---
-Complete colour changes and bare-metal resprays.
+Glass-out, bare-metal and colour-change resprays with blocking, priming and a deep cut-and-polish. Showroom finish, built to last.

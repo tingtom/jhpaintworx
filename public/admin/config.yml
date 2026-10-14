@@ -14,6 +14,17 @@ site_url: https://tingtom.github.io/jhpaintworx/
 logo_url: /jhpaintworx/logo.svg
 
 collections:
+  - name: slides
+    label: Homepage hero slides
+    folder: src/content/slides
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: Heading (top slide only shows), name: title, widget: string }
+      - { label: Main text, name: text, widget: text }
+      - { label: Image, name: image, widget: image }
+      - { label: Caption (small line on slide), name: caption, widget: string, required: false }
+      - { label: Order, name: order, widget: number, default: 0 }
   - name: jobs
     label: Paint jobs (gallery)
     folder: src/content/jobs
@@ -34,5 +45,7 @@ collections:
     slug: "{{slug}}"
     fields:
       - { label: Title, name: title, widget: string }
+      - { label: Icon, name: icon, widget: select, options: [truck, tractor, sparkles, hammer, crosshair, factory], default: sparkles }
+      - { label: Short description, name: description, widget: text, required: false }
       - { label: Order, name: order, widget: number, default: 0 }
       - { label: Body, name: body, widget: markdown, required: false }

@@ -1,22 +1,37 @@
 ---
 import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
 import { Truck, Tractor, Sparkles, Hammer, Crosshair, Factory } from 'lucide-astro';
 const base = import.meta.env.BASE_URL;
-const services = [
-  { ic: Truck, t: 'Commercial Vehicle Paintwork', d: 'Fleet cabs, box bodies and HGVs in 2-pack solid colour. Colour-matched to livery, scheduled around your work.' },
-  { ic: Tractor, t: 'Plant & Machinery Paintwork', d: 'Excavators, dumpers, trailers and hire fleet — shot-blast prep options and heavy-duty topcoats.' },
-  { ic: Sparkles, t: 'Full Resprays', d: 'Glass-out, bare-metal and colour-change resprays with blocking, priming and a deep cut-and-polish.' },
-  { ic: Hammer, t: 'Panel Beating & Repairs', d: 'Dents, creases, scratches, bumper scuffs and arch repairs, blended invisibly across panels.' },
-  { ic: Crosshair, t: 'Expert Colour Matching', d: 'Spectrometer readings plus spray-out cards in daylight — metallics, pearls and tri-coats that match.' },
-  { ic: Factory, t: 'Welding & Restoration', d: 'Sills, arches, floors and classic shells cut out and welded properly before paint.' },
+
+const ICONS = { truck: Truck, tractor: Tractor, sparkles: Sparkles, hammer: Hammer, crosshair: Crosshair, factory: Factory };
+
+const fallback = [
+  { slug: 'commercial', data: { order: 1, icon: 'truck', title: 'Commercial Vehicle Paintwork', description: 'Fleet cabs, box bodies and HGVs in 2-pack solid colour. Colour-matched to livery, scheduled around your work.' } },
+  { slug: 'plant', data: { order: 2, icon: 'tractor', title: 'Plant & Machinery Paintwork', description: 'Excavators, dumpers, trailers and hire fleet — shot-blast prep options and heavy-duty topcoats.' } },
+  { slug: 'resprays', data: { order: 3, icon: 'sparkles', title: 'Full Resprays', description: 'Glass-out, bare-metal and colour-change resprays with blocking, priming and a deep cut-and-polish.' } },
+  { slug: 'panel', data: { order: 4, icon: 'hammer', title: 'Panel Beating & Repairs', description: 'Dents, creases, scratches, bumper scuffs and arch repairs, blended invisibly across panels.' } },
+  { slug: 'colour', data: { order: 5, icon: 'crosshair', title: 'Expert Colour Matching', description: 'Spectrometer readings plus spray-out cards in daylight — metallics, pearls and tri-coats that match.' } },
+  { slug: 'welding', data: { order: 6, icon: 'factory', title: 'Welding & Restoration', description: 'Sills, arches, floors and classic shells cut out and welded properly before paint.' } },
 ];
+
+const cms = await getCollection('services');
+const services = (cms.length ? cms : fallback)
+  .sort((a, b) => a.data.order - b.data.order)
+  .map(s => ({ ...s.data, slug: s.slug, body: s.body ?? '' }));
 ---
 <Base title="Services">
 <section class="block">
   <div class="section-head"><p class="kicker">SERVICES</p><h1>What the booth turns out.</h1><p class="sub">Every job gets the same discipline: strip back what's failed, build it flat, then lay colour and lacquer properly.</p></div>
   <div class="cards wrap">
-    {services.map(s => { const Icon = s.ic; return (<div class="scard"><div class="ic"><Icon size={24} /></div><h3>{s.t}</h3><p>{s.d}</p></div>); })}
+    {services.map(s => { const Icon = ICONS[s.icon] ?? Sparkles; return (
+      <div class="scard">
+        <div class="ic"><Icon size={24} /></div>
+        <h3>{s.title}</h3>
+        <p>{s.description || s.body}</p>
+      </div>
+    ); })}
   </div>
-  <div class="cta-band wrap"><div><h2>Not sure what yours needs?</h2><p>Send photos — we'll tell you repair vs respray honestly.</p></div><a class="btn light" href={`${base}contact/`}>Ask for a quote →</a></div>
+  <div class="cta-band wrap center"><div><h2>Not sure what yours needs?</h2><p>Send photos — we'll tell you repair vs respray honestly.</p></div><a class="btn light" href={`${base}contact/`}>Ask for a quote →</a></div>
 </section>
 </Base>

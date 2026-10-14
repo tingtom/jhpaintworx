@@ -9,6 +9,15 @@ export const CATEGORIES = [
   'classic',
 ] as const;
 
+export const ICONS = [
+  'truck',
+  'tractor',
+  'sparkles',
+  'hammer',
+  'crosshair',
+  'factory',
+] as const;
+
 const jobs = defineCollection({
   type: 'content',
   schema: z.object({
@@ -26,7 +35,20 @@ const services = defineCollection({
   schema: z.object({
     title: z.string(),
     order: z.number().default(0),
+    icon: z.enum(ICONS).default('sparkles'),
+    description: z.string().default(''),
   }),
 });
 
-export const collections = { jobs, services };
+const slides = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    text: z.string().default(''),
+    image: z.string(),
+    caption: z.string().optional(),
+    order: z.number().default(0),
+  }),
+});
+
+export const collections = { jobs, services, slides };
