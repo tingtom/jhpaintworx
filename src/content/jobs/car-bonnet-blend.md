@@ -1,6 +1,6 @@
 ---
 title: Black car bonnet blend
-category: car
+category: cars
 image: https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=900&auto=format&fit=crop
 date: 2026-07-15
 featured: true

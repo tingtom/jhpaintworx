@@ -1,39 +1,47 @@
 ---
 import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
 import { Phone, MapPin } from 'lucide-astro';
-const email = import.meta.env.PUBLIC_CONTACT_EMAIL ?? '';
+const base = import.meta.env.BASE_URL;
+const c = (await getCollection('contact'))[0]?.data;
+const s = (await getCollection('settings'))[0]?.data;
+const phone = s?.phone || '01933 422290';
+const tel = `tel:${phone.replace(/[^\+\d]/g, '')}`;
+const hours = s?.hours || 'Mon–Fri 07:30–17:30';
+const email = import.meta.env.PUBLIC_CONTACT_EMAIL ?? s?.email ?? '';
+const cats = (await getCollection('categories')).sort((a, b) => a.data.order - b.data.order);
 ---
 <Base title="Contact – get a quote">
 <section class="block">
-  <div class="section-head"><p class="kicker">CONTACT</p><h1>Get a quote.</h1><p class="sub">Send a few photos of the vehicle and the damage — they get the fastest, most accurate quotes.</p></div>
+  <div class="section-head"><p class="kicker">{c?.kicker ?? 'CONTACT'}</p><h1>{c?.title ?? 'Get a quote.'}</h1><p class="sub">{c?.sub ?? ''}</p></div>
   <div class="split wrap">
     <div>
-      <div class="scard"><h3><Phone size={20} /> <a href="tel:01933422290">01933 422290</a></h3><p>Mon–Fri 07:30–17:30 · Sat by appointment. Happy to talk through the job before you book.</p></div>
-      <div class="scard" style="margin-top:14px"><h3><MapPin size={20} /> Workshop</h3><p>Message us for the drop-off address and current lead time — fleet slots available.</p></div>
+      <div class="scard"><h3><Phone size={20} /> <a href={tel}>{phone}</a></h3><p>{[hours, c?.phoneNote].filter(Boolean).join(' — ')}</p></div>
+      <div class="scard" style="margin-top:14px"><h3><MapPin size={20} /> Workshop</h3><p>{c?.addressNote ?? ''}</p></div>
     </div>
     <form class="card" id="qform">
       <label>Your name<input name="name" required placeholder="Jane Bloggs" autocomplete="name" /></label>
       <label>Phone<input name="phone" type="tel" required placeholder="07…" autocomplete="tel" /></label>
-      <label>Vehicle / job type<select name="category"><option>car</option><option>bike</option><option>van</option><option>commercial</option><option>plant</option><option>classic</option></select></label>
+      <label>Vehicle / job type<select name="category">{cats.map(cat => <option value={cat.slug}>{cat.data.label}</option>)}</select></label>
       <label>Details<textarea name="message" rows="5" required placeholder="e.g. Focus ST bonnet + bumper stone chips, photos to follow…"></textarea></label>
       <button class="btn" type="submit">Send enquiry →</button>
       <p id="status"></p>
     </form>
   </div>
 </section>
-<script define:vars={{ email }}>
+<script define:vars={{ email, phone }}>
 const form = document.getElementById('qform');
 const status = document.getElementById('status');
 form?.addEventListener('submit', async (e) => {
   e.preventDefault();
-  if (!email) { status.textContent = 'Form email not configured yet — please call 01933 422290.'; return; }
+  if (!email) { status.textContent = `Form email not configured yet — please call ${phone}.`; return; }
   const data = Object.fromEntries(new FormData(form));
   status.textContent = 'Sending…';
   try {
     const r = await fetch(`https://formsubmit.co/ajax/${email}`, { method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'}, body: JSON.stringify(data) });
-    status.textContent = r.ok ? 'Sent — we’ll be in touch shortly.' : 'Send failed — please call 01933 422290.';
+    status.textContent = r.ok ? 'Sent — we’ll be in touch shortly.' : `Send failed — please call ${phone}.`;
     if (r.ok) form.reset();
-  } catch { status.textContent = 'Send failed — please call 01933 422290.'; }
+  } catch { status.textContent = `Send failed — please call ${phone}.`; }
 });
 </script>
 </Base>

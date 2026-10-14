@@ -1,0 +1,38 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+export async function getStaticPaths() {
+  const cats = (await getCollection('categories')).sort((a, b) => a.data.order - b.data.order);
+  return cats.map((c) => ({ params: { category: c.slug }, props: { cat: c } }));
+}
+const { cat } = Astro.props as { cat: any };
+const base = import.meta.env.BASE_URL;
+const cats = (await getCollection('categories')).sort((a, b) => a.data.order - b.data.order);
+const labels: Record<string,string> = {};
+cats.forEach(c => labels[c.slug] = c.data.label);
+const heading = cat.data.title || cat.data.label;
+const jobs = await getCollection('jobs');
+const list = jobs.filter(j => j.data.category === cat.slug);
+const img = (j: any) => j.data.image ?? `https://picsum.photos/seed/${j.slug}/800/600`;
+---
+<Base title={`${heading} workshop`}>
+<section class="block">
+  <div class="section-head"><p class="kicker">WORKSHOP / {cat.data.label.toUpperCase()}</p><h1>{heading} workshop.</h1>{cat.data.description && <p class="sub">{cat.data.description}</p>}</div>
+  <div class="pills wrap">
+    <a href={`${base}workshop/`}>All</a>
+    {cats.map(c => (
+      <a class={c.slug===cat.slug?'on':''} href={`${base}workshop/${c.slug}/`}>{c.data.label}</a>
+    ))}
+  </div>
+  <div class="grid wrap">
+    {list.map(j => (
+      <article class="job">
+        <div class="im"><img src={img(j)} alt={j.data.title} loading="lazy" /><span class="cat">{labels[j.data.category] ?? j.data.category}</span></div>
+        <div class="p"><h3>{j.data.title}</h3><p>{j.data.description ?? ''}</p></div>
+      </article>
+    ))}
+  </div>
+  {list.length===0 && <p style="padding:0 20px;color:var(--mut)">No {heading.toLowerCase()} jobs yet — add some via <a href={`${base}admin/`}>Admin</a>.</p>}
+  <p style="padding:0 20px;margin-top:24px;color:var(--mut)"><a href={`${base}workshop/`} style="font-weight:700">← All work</a> · <a href={`${base}contact/`} style="font-weight:700">Get a quote for your {heading.toLowerCase()} →</a></p>
+</section>
+</Base>

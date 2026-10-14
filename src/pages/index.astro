@@ -8,7 +8,12 @@ const jobs = await getCollection('jobs');
 const featured = jobs.filter(j => j.data.featured).slice(0, 6);
 const showJobs = featured.length ? featured : jobs.slice(0, 6);
 const img = (j: any) => j.data.image ?? `https://picsum.photos/seed/${j.slug}/800/600`;
-const LABELS: Record<string,string> = { all:'All', car:'Cars', bike:'Bikes', van:'Vans', commercial:'Commercial', plant:'Plant & machinery', classic:'Classics' };
+const cats = (await getCollection('categories')).sort((a, b) => a.data.order - b.data.order);
+const labels: Record<string,string> = {};
+cats.forEach(c => labels[c.slug] = c.data.label);
+const settings = (await getCollection('settings'))[0]?.data;
+const phone = settings?.phone || '01933 422290';
+const hours = settings?.hours || 'Mon–Fri 07:30–17:30';
 
 const ICONS = { truck: Truck, tractor: Tractor, sparkles: Sparkles, hammer: Hammer, crosshair: Crosshair, factory: Factory } as Record<string, any>;
 const cmsServices = await getCollection('services');
@@ -50,24 +55,21 @@ const services = cmsServices.sort((a, b) => a.data.order - b.data.order);
 <section class="block">
   <div class="section-head" style="display:flex;align-items:end;justify-content:space-between;gap:12px;flex-wrap:wrap">
     <div><p class="kicker">RECENT JOBS</p><h2>Fresh out of the booth.</h2></div>
-    <a class="btn ghost" style="color:var(--navy);border-color:var(--navy);margin-bottom:4px" href={`${base}gallery/`}>All work →</a>
+    <a class="btn ghost" style="color:var(--navy);border-color:var(--navy);margin-bottom:4px" href={`${base}workshop/`}>All work →</a>
   </div>
   <div class="grid wrap">
     {showJobs.map(j => (
       <article class="job">
-        <div class="im"><img src={img(j)} alt={j.data.title} loading="lazy" /><span class="cat">{LABELS[j.data.category]}</span></div>
+        <div class="im"><img src={img(j)} alt={j.data.title} loading="lazy" /><span class="cat">{labels[j.data.category] ?? j.data.category}</span></div>
         <div class="p"><h3>{j.data.title}</h3><p>{j.data.description ?? ''}</p></div>
       </article>
     ))}
   </div>
   <div class="pills wrap">
-    <a class="on" href={`${base}gallery/`}>All</a>
-    <a href={`${base}gallery/car/`}>Cars</a>
-    <a href={`${base}gallery/bike/`}>Bikes</a>
-    <a href={`${base}gallery/van/`}>Vans</a>
-    <a href={`${base}gallery/commercial/`}>Commercial</a>
-    <a href={`${base}gallery/plant/`}>Plant</a>
-    <a href={`${base}gallery/classic/`}>Classics</a>
+    <a class="on" href={`${base}workshop/`}>All</a>
+    {cats.map(c => (
+      <a href={`${base}workshop/${c.slug}/`}>{c.data.label}</a>
+    ))}
   </div>
 </section>
 
@@ -75,11 +77,11 @@ const services = cmsServices.sort((a, b) => a.data.order - b.data.order);
 <section class="block" style="background:#0f2440;color:#fff">
   <div class="section-head"><p class="kicker" style="color:var(--cream)">HOW IT WORKS</p><h2>Straightforward, no surprises.</h2></div>
   <div class="steps wrap">
-    <div class="step"><b>01</b><h3>Send photos</h3><p>Message or call 01933 422290 with photos of the vehicle and damage.</p></div>
+    <div class="step"><b>01</b><h3>Send photos</h3><p>Message or call {phone} with photos of the vehicle and damage.</p></div>
     <div class="step"><b>02</b><h3>Fixed quote</h3><p>Honest price for prep, paint and materials — agreed before we start.</p></div>
     <div class="step"><b>03</b><h3>Prep & paint</h3><p>Strip, fill, prime, flat, paint, lacquer, cut and polish.</p></div>
     <div class="step"><b>04</b><h3>Collect & gleam</h3><p>Checked in daylight, finished details dressed, ready to show.</p></div>
   </div>
-  <div class="cta-band wrap center"><div><h2>Get your paintwork booked in.</h2><p>Call 01933 422290 · 07:30–17:30, or send photos for a fast quote.</p></div><a class="btn light" href={`${base}contact/`}>Request a quote →</a></div>
+  <div class="cta-band wrap center"><div><h2>Get your paintwork booked in.</h2><p>Call {phone} · {hours}, or send photos for a fast quote.</p></div><a class="btn light" href={`${base}contact/`}>Request a quote →</a></div>
 </section>
 </Base>

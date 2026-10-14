@@ -19,6 +19,24 @@ One-time OAuth setup (5 min, free):
 2. Deploy `sveltia/oauth-proxy` (or `decap/oauth-proxy`) to Cloudflare Workers free.
 3. Put Worker URL in `public/admin/config.yml` → `backend.base_url`, commit.
 
+## Content model
+
+All site content lives in `src/content/*` and is edited via `/admin/`:
+
+| Collection | File(s) | Feeds |
+| --- | --- | --- |
+| `slides` | `src/content/slides/*.md` | Homepage hero slides |
+| `services` | `src/content/services/*.md` | Services page cards |
+| `categories` | `src/content/categories/*.md` | Workshop categories — each one creates a pill on the homepage and a `/workshop/<slug>/` page (defaults: cars, classics-historic, commercial, motorcycles, motorsport) |
+| `jobs` | `src/content/jobs/*.md` | Workshop grid + homepage "Recent jobs" |
+| `about` | `src/content/about/about.md` | "Meet the team" page (copy, bullet points, photo, team members) |
+| `contact` | `src/content/contact/contact.md` | Contact page copy |
+| `settings` | `src/content/settings/settings.md` | Phone number, opening hours, address, form email |
+
+When you add a category in the CMS, also add its slug to the `options` list of the
+`jobs` → Category field in `public/admin/config.yml` so it appears in the dropdown.
+Jobs with a category that has no matching file still show on "All work", labelled by slug.
+
 ## Dev
 
     npm install
