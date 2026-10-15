@@ -97,16 +97,14 @@ collections:
           - { label: Note under address, name: addressNote, widget: text, required: false }
   - name: settings
     label: Business details
-    files:
-      - name: settings
-        label: Phone, hours & address
-        file: src/content/settings/settings.md
-        fields:
-          - { label: Phone number, name: phone, widget: string, hint: "Used in the top bar, footer and buttons" }
-          - { label: Opening hours, name: hours, widget: string, hint: "Shown in the top bar" }
-          - { label: Address, name: address, widget: text, required: false, hint: "Shown in the footer and on the contact page" }
-          - { label: Contact form email, name: email, widget: string, required: false, hint: "Fallback for the form if the build variable isn't set" }
-          - { label: Facebook URL, name: facebook, widget: string, required: false, hint: "Leave blank to hide the Facebook icon" }
-          - { label: Instagram URL, name: instagram, widget: string, required: false, hint: "Leave blank to hide the Instagram icon" }
-          - { label: Map latitude, name: mapLat, widget: number, required: false, value_types: [float], hint: "Map pin on the contact page — right-click the spot on openstreetmap.org and pick 'Show address'" }
-          - { label: Map longitude, name: mapLon, widget: number, required: false, value_types: [float], hint: "Leave both blank to hide the map" }
+    file: src/content/settings/settings.md
+    fields:
+      - { label: Phone number, name: phone, widget: string, hint: "Used in the top bar, footer and buttons" }
+      - { label: Opening hours, name: hours, widget: string, hint: "Shown in the top bar" }
+      - { label: Address, name: address, widget: text, required: false, hint: "Shown in the footer and on the contact page" }
+      - { label: Contact form email, name: email, widget: string, required: false, hint: "Fallback for the form if the build variable isn't set" }
+      - { label: Facebook URL, name: facebook, widget: string, required: false, hint: "Leave blank to hide the Facebook icon" }
+      - { label: Instagram URL, name: instagram, widget: string, required: false, hint: "Leave blank to hide the Instagram icon" }
+      - { label: Map latitude, name: mapLat, widget: number, required: false, value_types: [float], hint: "Map pin on the contact page — right-click the spot on openstreetmap.org and pick 'Show address'" }
+      - { label: Map longitude, name: mapLon, widget: number, required: false, value_types: [float], hint: "Leave both blank to hide the map" }
+---

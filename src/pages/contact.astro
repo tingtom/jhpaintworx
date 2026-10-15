@@ -3,39 +3,43 @@ import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 import { Phone, MapPin } from 'lucide-astro';
 const base = import.meta.env.BASE_URL;
-const c = (await getCollection('contact'))[0]?.data;
-const s = (await getCollection('settings'))[0]?.data;
-const phone = s?.phone || '01933 422290';
+const contactData = (await getCollection('contact'))[0]?.data ?? {};
+const settings = (await getCollection('settings'))[0]?.data ?? {};
+const phone = settings?.phone || '01933 422290';
 const tel = `tel:${phone.replace(/[^\+\d]/g, '')}`;
-const hours = s?.hours || 'Mon–Fri 07:30–17:30';
-const address = s?.address || '';
-const email = import.meta.env.PUBLIC_CONTACT_EMAIL ?? s?.email ?? '';
-const cats = (await getCollection('categories')).sort((a, b) => a.data.order - b.data.order);
-// OpenStreetMap embed with a marker — lat/lon come from the CMS settings.
-const hasMap = Number.isFinite(s?.mapLat) && Number.isFinite(s?.mapLon) && !(s?.mapLat === 0 && s?.mapLon === 0);
+const hours = settings?.hours || 'Mon–Fri 07:30–17:30';
+const address = settings?.address || '';
+const email = import.meta.env.PUBLIC_CONTACT_EMAIL ?? settings?.email ?? '';
+const cats = await getCollection('categories');
+const mapLat = settings?.mapLat ?? 0;
+const mapLon = settings?.mapLon ?? 0;
+const hasMap = Number.isFinite(mapLat) && Number.isFinite(mapLon) && !(mapLat === 0 && mapLon === 0);
 const mapSrc = hasMap
-  ? `https://www.openstreetmap.org/export/embed.html?bbox=${(s.mapLon! - 0.004).toFixed(5)},${(s.mapLat! - 0.0025).toFixed(5)},${(s.mapLon! + 0.004).toFixed(5)},${(s.mapLat! + 0.0025).toFixed(5)}&layer=mapnik&marker=${s.mapLat!.toFixed(5)},${s.mapLon!.toFixed(5)}`
+  ? `https://www.openstreetmap.org/export/embed.html?bbox=${(mapLon! - 0.004).toFixed(5)},${(mapLat! - 0.0025).toFixed(5)},${(mapLon! + 0.004).toFixed(5)},${(mapLat! + 0.0025).toFixed(5)}&layer=mapnik&marker=${mapLat!.toFixed(5)},${mapLon!.toFixed(5)}`
   : '';
 ---
 <Base title="Contact – get a quote">
 <section class="block">
-  <div class="section-head"><p class="kicker">{c?.kicker ?? 'CONTACT'}</p><h1>{c?.title ?? 'Get a quote.'}</h1><p class="sub">{c?.sub ?? ''}</p></div>
+  <div class="section-head"><p class="kicker">{contactData?.kicker ?? 'CONTACT'}</p><h1>{contactData?.title ?? 'Get a quote.'}</h1><p class="sub">{contactData?.sub ?? ''}</p></div>
   <div class="split wrap">
     <div>
-      <div class="scard"><h3><Phone size={20} /> <a href={tel}>{phone}</a></h3><p>{[hours, c?.phoneNote].filter(Boolean).join(' — ')}</p></div>
+      <div class="scard"><h3><Phone size={20} /> <a href={tel}>{phone}</a></h3><p>{[hours, contactData?.phoneNote].filter(Boolean).join(' — ')}</p></div>
       <div class="scard" style="margin-top:14px">
         <h3><MapPin size={20} /> Workshop</h3>
         {address && <p class="addr">{address}</p>}
         {hasMap && (
-          <iframe
-            class="map"
-            title="Workshop location"
-            src={mapSrc}
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-          />
+          <>
+            <iframe
+              class="map"
+              title="Workshop location"
+              src={mapSrc}
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            />
+            <p style="margin-top:8px"><a href={`https://www.google.com/maps/search/?api=1&query=${mapLat},${mapLon}`} target="_blank" rel="noopener">Open in Google Maps →</a></p>
+          </>
         )}
-        {c?.addressNote && <p style="margin-top:12px">{c?.addressNote}</p>}
+        {contactData?.addressNote && <p style="margin-top:12px">{contactData?.addressNote}</p>}
         <p class="mapcredit">Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a></p>
       </div>
     </div>
