@@ -107,4 +107,3 @@ collections:
       - { label: Instagram URL, name: instagram, widget: string, required: false, hint: "Leave blank to hide the Instagram icon" }
       - { label: Map latitude, name: mapLat, widget: number, required: false, value_types: [float], hint: "Map pin on the contact page — right-click the spot on openstreetmap.org and pick 'Show address'" }
       - { label: Map longitude, name: mapLon, widget: number, required: false, value_types: [float], hint: "Leave both blank to hide the map" }
----
