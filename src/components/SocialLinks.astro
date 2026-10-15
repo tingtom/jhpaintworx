@@ -1,0 +1,36 @@
+---
+// Facebook / Instagram links, shown in the top bar and the footer.
+// Glyphs are solid (filled) so they stay legible at the small sizes used.
+// URLs come from Business details in the CMS — blank hides the icon.
+import { getCollection } from 'astro:content';
+
+interface Props { class?: string; }
+const { class: cls = '' } = Astro.props;
+
+const glyphs = {
+  // Lucide "facebook" outline, filled.
+  facebook: 'M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z',
+  // Solid Instagram: rounded square with the lens and flash knocked out.
+  instagram:
+    'M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Z' +
+    'M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 1 1 9 0Z' +
+    'M18.5 6.5a1 1 0 1 1-2 0 1 1 0 1 1 2 0Z',
+};
+
+const settings = (await getCollection('settings'))[0]?.data;
+const social = ([
+  { label: 'Facebook', url: settings?.facebook, d: glyphs.facebook, fillRule: 'nonzero' },
+  { label: 'Instagram', url: settings?.instagram, d: glyphs.instagram, fillRule: 'evenodd' },
+] as const).filter((s) => s.url);
+---
+{social.length > 0 && (
+  <span class={`social-links ${cls}`}>
+    {social.map((s) => (
+      <a href={s.url} target="_blank" rel="noopener" aria-label={s.label} title={s.label}>
+        <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true" focusable="false">
+          <path d={s.d} fill-rule={s.fillRule} />
+        </svg>
+      </a>
+    ))}
+  </span>
+)}
