@@ -178,7 +178,7 @@ form.card button{margin-top:18px}
 <slot />
 <footer>
 <div class="cols">
-<div><h4>JH PAINTWORX LTD <span class="copy">© {new Date().getFullYear()}</span></h4><p>Showroom paintwork, panel repair and custom refinishing for cars, bikes, vans, commercials, plant and classics.</p><p><a class="tel" href={tel}><Phone size={15} /> {phone}</a> &middot; <Clock size={15} /> {hours} <span>· Sat by appointment</span><br /><MapPin size={15} /> {settings.address}</p>
+<div><h4>JH PAINTWORX LTD <span class="copy">© {new Date().getFullYear()}</span></h4><p>Showroom paintwork, panel repair and custom refinishing for cars, bikes, vans, commercials, plant and classics.</p><p><a class="tel" href={tel}><Phone size={15} /> {phone}</a></p><p><Clock size={15} /> {hours} <span>· Sat by appointment</span></p>{settings?.address && <p class="addr"><MapPin size={15} /> {settings.address}</p>}
   <SocialLinks class="fsocial" />
 </div>
 <div><h4>EXPLORE</h4><p>{cats.map((c, i) => (<Fragment><a href={`${base}workshop/${c.slug}/`}>{c.data.label}</a>{i < cats.length - 1 ? ' · ' : ''}</Fragment>))}<br /><a href={`${base}services/`}>Services</a><br /><a href={`${base}about/`}>Meet the team</a><br /><a href={`${base}contact/`}>Contact</a> · <a href={`${base}contact/`}>Get a quote</a></p></div>
