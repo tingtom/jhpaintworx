@@ -11,7 +11,8 @@ backend:
 media_folder: public/images/uploads
 public_folder: /jhpaintworx/images/uploads
 site_url: https://tingtom.github.io/jhpaintworx/
-logo_url: /jhpaintworx/logo.png
+logo:
+  src: /jhpaintworx/logo.png
 
 collections:
   - name: slides
@@ -25,6 +26,7 @@ collections:
       - { label: Image, name: image, widget: image }
       - { label: Caption (small line on slide), name: caption, widget: string, required: false }
       - { label: Order, name: order, widget: number, default: 0 }
+
   - name: categories
     label: Workshop categories
     folder: src/content/categories
@@ -37,6 +39,7 @@ collections:
       - { label: Description, name: description, widget: text, required: false }
       # Adding a category here creates a new /workshop/<slug>/ page and pill.
       # The Category dropdown on paint jobs is set below — keep it in sync.
+
   - name: jobs
     label: Paint jobs (workshop)
     folder: src/content/jobs
@@ -50,6 +53,7 @@ collections:
       - { label: Featured on homepage, name: featured, widget: boolean, default: false }
       - { label: Description, name: description, widget: text, required: false }
       - { label: Body, name: body, widget: markdown, required: false }
+
   - name: services
     label: Services
     folder: src/content/services
@@ -61,11 +65,12 @@ collections:
       - { label: Short description, name: description, widget: text, required: false }
       - { label: Order, name: order, widget: number, default: 0 }
       - { label: Body, name: body, widget: markdown, required: false }
-  - name: about
-    label: Meet the team
+
+  - name: pages
+    label: Pages
     files:
       - name: about
-        label: Team page
+        label: Meet the team
         file: src/content/about/about.md
         fields:
           - { label: Kicker, name: kicker, widget: string, default: "MEET THE TEAM" }
@@ -83,9 +88,7 @@ collections:
               - { label: Role, name: role, widget: string, required: false }
               - { label: Photo, name: photo, widget: image, required: false }
               - { label: Blurb, name: blurb, widget: text, required: false }
-  - name: contact
-    label: Contact page
-    files:
+
       - name: contact
         label: Contact page
         file: src/content/contact/contact.md
@@ -95,6 +98,14 @@ collections:
           - { label: Sub heading, name: sub, widget: text, required: false }
           - { label: Note under phone number, name: phoneNote, widget: text, required: false }
           - { label: Note under address, name: addressNote, widget: text, required: false }
+
+      - name: workshop
+        label: Workshop page
+        file: src/content/workshop.json
+        fields:
+          - { label: Title, name: title, widget: string }
+          - { label: Paragraph, name: paragraph, widget: text, required: false }
+
   - name: settings
     label: Business details
     file: src/content/settings/settings.json
@@ -105,5 +116,5 @@ collections:
       - { label: Contact form email, name: email, widget: string, required: false, hint: "Fallback for the form if the build variable isn't set" }
       - { label: Facebook URL, name: facebook, widget: string, required: false, hint: "Leave blank to hide the Facebook icon" }
       - { label: Instagram URL, name: instagram, widget: string, required: false, hint: "Leave blank to hide the Instagram icon" }
-      - { label: Map latitude, name: mapLat, widget: number, required: false, value_types: [float], hint: "Map pin on the contact page — right-click the spot on openstreetmap.org and pick 'Show address'" }
-      - { label: Map longitude, name: mapLon, widget: number, required: false, value_types: [float], hint: "Leave both blank to hide the map" }
+      - { label: Map latitude, name: mapLat, widget: number, required: false, hint: "Map pin on the contact page — right-click the spot on openstreetmap.org and pick 'Show address'" }
+      - { label: Map longitude, name: mapLon, widget: number, required: false, hint: "Leave both blank to hide the map" }
