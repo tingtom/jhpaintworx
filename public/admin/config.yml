@@ -110,6 +110,7 @@ collections:
     label: Business details
     file: src/content/settings/settings.json
     fields:
+      - { label: Title, name: title, widget: string, default: "Business details" }
       - { label: Phone number, name: phone, widget: string, hint: "Used in the top bar, footer and buttons" }
       - { label: Opening hours, name: hours, widget: string, hint: "Shown in the top bar" }
       - { label: Address, name: address, widget: text, required: false, hint: "Shown in the footer and on the contact page" }

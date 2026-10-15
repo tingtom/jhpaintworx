@@ -7,10 +7,11 @@ const cats = (await getCollection('categories')).sort((a, b) => a.data.order - b
 const labels: Record<string,string> = {};
 cats.forEach(c => labels[c.slug] = c.data.label);
 const jobs = await getCollection('jobs');
+const workshop = (await getCollection('workshop'))[0]?.data ?? { title: 'Workshop', paragraph: '' };
 ---
-<Base title="Workshop">
+<Base title={workshop.title}>
 <section class="block">
-  <div class="section-head"><p class="kicker">WORKSHOP</p><h1>Our work, by category.</h1><p class="sub">Tap a category to filter. New jobs appear here automatically when added in Admin.</p></div>
+  <div class="section-head"><p class="kicker">WORKSHOP</p><h1>{workshop.title}</h1><p class="sub">{workshop.paragraph || 'Tap a category to filter. New jobs appear here automatically when added in Admin.'}</p></div>
   <div class="pills wrap">
     <a class="on" href={`${base}workshop/`}>All</a>
     {cats.map(c => (
