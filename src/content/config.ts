@@ -98,4 +98,12 @@ const settings = defineCollection({
   }),
 });
 
-export const collections = { jobs, services, slides, categories, about, contact, settings };
+const workshop = defineCollection({
+  type: 'data',
+  schema: z.object({
+    title: z.string().default('Workshop'),
+    paragraph: z.string().default(''),
+  }),
+});
+
+export const collections = { jobs, services, slides, categories, about, contact, settings, workshop };

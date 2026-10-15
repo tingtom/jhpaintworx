@@ -101,7 +101,7 @@ collections:
 
       - name: workshop
         label: Workshop page
-        file: src/content/workshop.json
+        file: src/content/workshop/workshop.json
         fields:
           - { label: Title, name: title, widget: string }
           - { label: Paragraph, name: paragraph, widget: text, required: false }
