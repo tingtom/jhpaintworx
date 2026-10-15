@@ -97,7 +97,7 @@ collections:
           - { label: Note under address, name: addressNote, widget: text, required: false }
   - name: settings
     label: Business details
-    file: src/content/settings/settings.md
+    file: src/content/settings/settings.json
     fields:
       - { label: Phone number, name: phone, widget: string, hint: "Used in the top bar, footer and buttons" }
       - { label: Opening hours, name: hours, widget: string, hint: "Shown in the top bar" }

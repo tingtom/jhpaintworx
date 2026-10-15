@@ -85,7 +85,7 @@ const contact = defineCollection({
 });
 
 const settings = defineCollection({
-  type: 'content',
+  type: 'data',
   schema: z.object({
     phone: z.string().default('01933 422290'),
     hours: z.string().default('Mon–Fri 07:30–17:30'),
