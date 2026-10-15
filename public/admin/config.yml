@@ -108,9 +108,8 @@ collections:
 
   - name: settings
     label: Business details
-    folder: src/content/settings
-    create: false
-    slug: "{{slug}}"
+    file: src/content/settings/settings.json
+    identifier_field: title
     fields:
       - { label: Title, name: title, widget: string, default: "Business details" }
       - { label: Phone number, name: phone, widget: string, hint: "Used in the top bar, footer and buttons" }
