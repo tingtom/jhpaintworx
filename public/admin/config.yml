@@ -118,5 +118,5 @@ singletons:
       - { label: Contact form email, name: email, widget: string, required: false, hint: "Fallback for the form if the build variable isn't set" }
       - { label: Facebook URL, name: facebook, widget: string, required: false, hint: "Leave blank to hide the Facebook icon" }
       - { label: Instagram URL, name: instagram, widget: string, required: false, hint: "Leave blank to hide the Instagram icon" }
-      - { label: Map latitude, name: mapLat, widget: number, required: false, hint: "Map pin on the contact page — right-click the spot on openstreetmap.org and pick 'Show address'" }
-      - { label: Map longitude, name: mapLon, widget: number, required: false, hint: "Leave both blank to hide the map" }
+      - { label: Map latitude, name: mapLat, widget: number, step: any, required: false, hint: "Map pin on the contact page — right-click the spot on openstreetmap.org and pick 'Show address'" }
+      - { label: Map longitude, name: mapLon, widget: number, step: any, required: false, hint: "Leave both blank to hide the map" }
