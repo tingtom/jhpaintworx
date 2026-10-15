@@ -8,7 +8,7 @@ const base = import.meta.env.BASE_URL;
 const path = Astro.url.pathname;
 const isActive = (href: string) => href === `${base}` ? path === href || path === `${base}index.html` : path.startsWith(href);
 const navCls = (href: string) => `nav-link${isActive(href) ? ' active' : ''}`;
-const settings = (await getCollection('pages')).find(p => p.slug === 'settings')?.data;
+const settings = (await getCollection('settings'))[0]?.data;
 const phone = settings?.phone || '01933 422290';
 const tel = `tel:${phone.replace(/[^\+\d]/g, '')}`;
 const hours = settings?.hours || 'Mon–Fri 07:30–17:30';
