@@ -1,5 +1,5 @@
 ---
-title: Classic Mini racing chassis
+title: Classic Mini Miglia Shell
 category: classics-historic
 images:
   - /jhpaintworx/images/uploads/pasted-image-1792143162756.webp
