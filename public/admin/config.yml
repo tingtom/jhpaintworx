@@ -23,7 +23,18 @@ collections:
     fields:
       - { label: Heading (top slide only shows), name: title, widget: string }
       - { label: Main text, name: text, widget: text }
-      - { label: Image, name: image, widget: image }
+      # Homepage slider images are shown full-width, so they keep a high resolution.
+      - label: Image
+        name: image
+        widget: image
+        media_libraries:
+          default:
+            config:
+              transformations:
+                raster_image:
+                  format: webp
+                  quality: 90
+                  width: 2400
       - { label: Caption (small line on slide), name: caption, widget: string, required: false }
       - { label: Order, name: order, widget: number, default: 0 }
 
@@ -48,7 +59,21 @@ collections:
     fields:
       - { label: Title, name: title, widget: string }
       - { label: Category, name: category, widget: select, options: [cars, classics-historic, commercial, motorcycles, motorsport], hint: "Match the slug of a Workshop category" }
-      - { label: Images, name: images, widget: image, multiple: true, required: false, hint: "Add several — the workshop page shows left/right arrows to browse them" }
+      # Workshop cards are small, so the images are downscaled on upload to keep the page fast.
+      - label: Images
+        name: images
+        widget: image
+        multiple: true
+        required: false
+        hint: "Add several — the workshop page shows left/right arrows to browse them"
+        media_libraries:
+          default:
+            config:
+              transformations:
+                raster_image:
+                  format: webp
+                  quality: 75
+                  width: 1400
       - { label: Date, name: date, widget: datetime, required: false }
       - { label: Featured on homepage, name: featured, widget: boolean, default: false }
       - { label: Description, name: description, widget: text, required: false }
