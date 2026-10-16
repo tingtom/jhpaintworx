@@ -1,5 +1,5 @@
 ---
-title: Volvo lorry
+title: Volvo Lorry
 category: commercial
 images:
   - /jhpaintworx/images/uploads/pasted-image-1792138480470.webp
