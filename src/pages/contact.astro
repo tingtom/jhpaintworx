@@ -9,7 +9,9 @@ const phone = settings?.phone || '01933 422290';
 const tel = `tel:${phone.replace(/[^\+\d]/g, '')}`;
 const hours = settings?.hours || 'Mon–Fri 07:30–17:30';
 const address = settings?.address || '';
-const email = import.meta.env.PUBLIC_CONTACT_EMAIL ?? settings?.email ?? '';
+// GitHub Pages builds set this var to '' when it isn't configured as a repo
+// variable, so use || (not ??) to fall back to the CMS email in that case.
+const email = import.meta.env.PUBLIC_CONTACT_EMAIL || settings?.email || '';
 const cats = await getCollection('categories');
 const mapLat = settings?.mapLat ?? 0;
 const mapLon = settings?.mapLon ?? 0;
