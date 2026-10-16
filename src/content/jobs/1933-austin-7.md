@@ -6,7 +6,7 @@ images:
   - /jhpaintworx/images/uploads/pasted-image-1792141221953.webp
 date: 2026-10-16T10:00:00
 featured: false
-description: dsadsadd
+description: ''
 ---
 
 sadasdadsdad
