@@ -75,7 +75,9 @@ const mapSrc = hasMap
 .filelabel input[type=file]::file-selector-button:hover{background:var(--navy);color:#fff}
 .filelabel .opt{font-weight:500;color:var(--mut);font-size:13px}
 .filehint{display:block;font-weight:500;color:var(--mut);font-size:13px;margin-top:5px}
-.filenames{font-size:13.5px;color:var(--mut);line-height:1.6;margin:10px 0 0}
+.filenames{font-size:13.5px;color:var(--mut);line-height:1.6;margin:10px 0 0;white-space:pre-line}
+.filenames.over{color:var(--red);font-weight:700}
+button[type=submit]:disabled{opacity:.5;cursor:not-allowed}
 </style>
 <script define:vars={{ formId, phone }}>
 // FormSubmit.co: per their docs, attachments only flow through the normal
@@ -88,9 +90,40 @@ const filenames = document.getElementById('filenames');
 const fsExtra = document.getElementById('fsExtra');
 const phoneInput = form?.querySelector('input[name=phone]');
 const fileInput = form?.querySelector('input[type=file]');
-// FormSubmit.co caps the summed file sizes at 10MB per submission.
-const MAX_TOTAL = 9.5 * 1024 * 1024;
+// FormSubmit.co caps the summed file sizes at 10MB per submission. We keep a
+// little headroom and check as soon as photos are picked, not only on send.
+const MAX_TOTAL = 10 * 1024 * 1024;
+const SEND_LIMIT = 9.5 * 1024 * 1024;
 const MAX_PHOTOS = 10;
+const sendBtn = form?.querySelector('button[type=submit]');
+const mb = (n) => `${(n / 1048576).toFixed(1)}MB`;
+const pickedFiles = () => [...form.querySelectorAll('input[type=file]')].flatMap(i => [...i.files]);
+let pickedCount = 0;
+let oversizeMsg = false;
+// List every photo, its size and the running total, and block Send while the
+// total is over the limit so the submission can never be rejected silently.
+const renderFiles = () => {
+  const files = pickedFiles();
+  const total = files.reduce((n, f) => n + f.size, 0);
+  const over = total > SEND_LIMIT;
+  filenames.textContent = files.length
+    ? files.map(f => `${f.name} (${mb(f.size)})`).join('\n')
+      + `\nTotal: ${mb(total)} of 10MB`
+      + (pickedCount > MAX_PHOTOS ? `\n(Only the first ${MAX_PHOTOS} photos can be sent.)` : '')
+    : '';
+  filenames.classList.toggle('over', over);
+  if (sendBtn) {
+    sendBtn.disabled = over;
+    sendBtn.title = over ? 'Photos are over the 10MB limit' : '';
+  }
+  if (over) {
+    status.textContent = `Those photos add up to ${mb(total)}, which is over FormSubmit's 10MB limit. Please remove or shrink some, or call ${phone}.`;
+    oversizeMsg = true;
+  } else if (oversizeMsg) {
+    status.textContent = '';
+    oversizeMsg = false;
+  }
+};
 // One real phone number: optional leading +44/+, then digits with the usual
 // separators. No letters anywhere.
 const PHONE_RE = /^[+]?[0-9 ().-]{10,16}$/;
@@ -99,6 +132,7 @@ const PHONE_RE = /^[+]?[0-9 ().-]{10,16}$/;
 // into its own hidden input named attachment2, attachment3, ... before submit.
 fileInput?.addEventListener('change', () => {
   const files = [...fileInput.files];
+  pickedCount = files.length;
   fsExtra.textContent = '';
   if (files.length > 1) {
     // Split over hidden clones; the visible picker holds only the first photo.
@@ -116,30 +150,32 @@ fileInput?.addEventListener('change', () => {
     dt0.items.add(files[0]);
     fileInput.files = dt0.files;
   }
-  filenames.textContent = files.length
-    ? files.map(f => `${f.name} (${(f.size / 1048576).toFixed(1)}MB)`).join('\n')
-    : '';
+  renderFiles();
 });
 const sent = () => {
   status.textContent = 'Sent. We’ll be in touch shortly.';
   fsExtra.textContent = '';
   fileInput.value = '';
   form.reset();
-  filenames.textContent = '';
+  pickedCount = 0;
+  oversizeMsg = false;
+  renderFiles();
 };
 form?.addEventListener('submit', async (e) => {
   e.preventDefault();
   if (!formId) { status.textContent = `Form not set up yet, please call ${phone}.`; return; }
   status.textContent = '';
+  oversizeMsg = false;
   if (!PHONE_RE.test(phoneInput.value.trim())) {
     status.textContent = 'Please enter a real phone number, e.g. 07123 456789.';
     phoneInput.focus();
     return;
   }
-  const files = [...form.querySelectorAll('input[type=file]')].flatMap(i => [...i.files]);
+  const files = pickedFiles();
   const totalSize = files.reduce((n, f) => n + f.size, 0);
   if (totalSize > MAX_TOTAL) {
-    status.textContent = `Those photos add up to more than 10MB. Please send fewer or smaller ones, or call ${phone}.`;
+    status.textContent = `Those photos add up to ${mb(totalSize)}, over FormSubmit's 10MB limit. Please remove or shrink some, or call ${phone}.`;
+    oversizeMsg = true;
     return;
   }
   status.textContent = files.length ? 'Sending photos…' : 'Sending…';
