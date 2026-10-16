@@ -1,5 +1,5 @@
 ---
-title: Mazda MX5 rear quarter
+title: Mazda MX5 Rear Quarter
 category: cars
 images:
   - /jhpaintworx/images/uploads/pasted-image-1792142270322.webp
