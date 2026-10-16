@@ -1,5 +1,5 @@
 ---
-title: Land Rover defender
+title: Land Rover Defender Polish
 category: classics-historic
 images:
   - /jhpaintworx/images/uploads/pasted-image-1792135780204.webp
