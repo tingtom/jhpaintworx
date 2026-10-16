@@ -2,6 +2,9 @@
 title: Classic Mini racing chassis
 category: classics-historic
 images:
+  - /jhpaintworx/images/uploads/pasted-image-1792143162756.webp
+  - /jhpaintworx/images/uploads/pasted-image-1792143150519.webp
+  - /jhpaintworx/images/uploads/pasted-image-1792143124919.webp
   - /jhpaintworx/images/uploads/pasted-image-1792142158299.webp
   - /jhpaintworx/images/uploads/pasted-image-1792142166084.webp
   - /jhpaintworx/images/uploads/pasted-image-1792142176779.webp
