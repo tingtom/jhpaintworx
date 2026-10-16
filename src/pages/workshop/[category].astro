@@ -30,6 +30,6 @@ const list = jobs.filter(j => j.data.category === cat.slug);
     ))}
   </div>
   {list.length===0 && <p style="padding:0 20px;color:var(--mut)">No {heading.toLowerCase()} jobs yet — add some via <a href={`${base}admin/`}>Admin</a>.</p>}
-  <p style="padding:0 20px;margin-top:24px;color:var(--mut)"><a href={`${base}workshop/`} style="font-weight:700">← All work</a> · <a href={`${base}contact/`} style="font-weight:700">Get a quote for your {heading.toLowerCase()} →</a></p>
+  <p style="padding:0 20px;margin-top:24px;color:var(--mut);text-align:center"><a href={`${base}contact/`} style="font-weight:700">Get a quote for your {heading.toLowerCase()} →</a></p>
 </section>
 </Base>

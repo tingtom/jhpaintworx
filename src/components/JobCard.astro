@@ -25,7 +25,7 @@ const imgs: string[] = job.data.images?.length
   <div class="p"><h3>{job.data.title}</h3><p>{job.data.description ?? ''}</p></div>
 </article>
 <style>
-.job .im{cursor:zoom-in}
+.job .im{cursor:zoom-in;touch-action:pan-y}
 .job .im .slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .35s ease}
 .job .im .slide.on{opacity:1}
 .jarrow{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:42px;height:42px;padding:0;border-radius:50%;border:1px solid rgba(255,255,255,.5);background:rgba(11,22,38,.5);color:#fff;cursor:pointer;display:grid;place-items:center;transition:.2s;backdrop-filter:blur(4px)}
@@ -103,23 +103,41 @@ const imgs: string[] = job.data.images?.length
     if (!slides.length) return;
     const count = im.querySelector('.jcount b');
     let i = 0;
+    // Move to slide n. Each image only downloads the first time it is shown
+    // (data-src deferral), so this is shared by arrows, swipes and the lightbox.
+    const show = (n: number) => {
+      i = (n + slides.length) % slides.length;
+      const img = slides[i] as HTMLImageElement;
+      if (!img.getAttribute('src') && img.dataset.src) img.src = img.dataset.src;
+      slides.forEach((s, k) => s.classList.toggle('on', k === i));
+      if (count) count.textContent = String(i + 1);
+    };
     if (slides.length > 1) {
-      const show = (n: number) => {
-        i = (n + slides.length) % slides.length;
-        // Each image only downloads the first time it is shown (data-src deferral).
-        const img = slides[i] as HTMLImageElement;
-        if (!img.getAttribute('src') && img.dataset.src) img.src = img.dataset.src;
-        slides.forEach((s, k) => s.classList.toggle('on', k === i));
-        if (count) count.textContent = String(i + 1);
-      };
-      const prev = im.querySelector('.jarrow.prev');
-      const next = im.querySelector('.jarrow.next');
-      prev?.addEventListener('click', () => show(i - 1));
-      next?.addEventListener('click', () => show(i + 1));
+      im.querySelector('.jarrow.prev')?.addEventListener('click', () => show(i - 1));
+      im.querySelector('.jarrow.next')?.addEventListener('click', () => show(i + 1));
     }
 
-    // Click the card image to open the full-size lightbox at the current slide.
+    // Touch swiping: a horizontal drag on the photo moves to the next/previous one.
+    let sx = 0, sy = 0, swipeEnd = 0;
+    im.addEventListener('touchstart', (e) => {
+      sx = e.touches[0].clientX;
+      sy = e.touches[0].clientY;
+    }, { passive: true });
+    im.addEventListener('touchend', (e) => {
+      const t = e.changedTouches[0];
+      const dx = t.clientX - sx;
+      const dy = t.clientY - sy;
+      // Only for a deliberate sideways drag, never a tap or a vertical scroll.
+      if (slides.length > 1 && Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) {
+        show(dx < 0 ? i + 1 : i - 1);
+        swipeEnd = Date.now();
+      }
+    }, { passive: true });
+
+    // Click/tap the card image to open the full-size lightbox at the current slide.
     im.addEventListener('click', (e) => {
+      // The tap at the end of a swipe must not open the lightbox.
+      if (Date.now() - swipeEnd < 600) return;
       if ((e.target as HTMLElement).closest('.jarrow') || (e.target as HTMLElement).closest('.jcount')) return;
       lbOpen(slides.map((s) => (s as HTMLImageElement).src || (s as HTMLImageElement).dataset.src || ''), i);
     });
