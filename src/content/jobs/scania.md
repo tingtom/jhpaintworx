@@ -1,5 +1,5 @@
 ---
-title: Scania
+title: Scania Lorry
 category: commercial
 images:
   - /jhpaintworx/images/uploads/pasted-image-1792139044401.webp
