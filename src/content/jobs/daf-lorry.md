@@ -1,5 +1,5 @@
 ---
-title: DAF lorry
+title: DAF Lorry
 category: commercial
 images:
   - /jhpaintworx/images/uploads/pasted-image-1792138522091.webp
