@@ -9,9 +9,9 @@ const { Content } = entry ? await entry.render() : { Content: null };
 ---
 <Base title="Meet the team">
 <section class="block">
-  <div class="section-head"><p class="kicker">{d?.kicker ?? 'ABOUT US'}</p><h1>{d?.title ?? 'A paint shop that sweats the prep.'}</h1><p class="sub">{d?.sub ?? ''}</p></div>
   <div class="split wrap">
     <div>
+      <div class="section-head"><p class="kicker">{d?.kicker ?? 'MEET THE TEAM'}</p><h1>{d?.title ?? 'A paint shop that sweats the prep.'}</h1><p class="sub">{d?.sub ?? ''}</p></div>
       {d?.image && <img class="frame" src={d.image} alt={d.title || 'The JH Paintworx team'} loading="eager" decoding="async" />}
       {d?.lead && <p class="lead">{d.lead}</p>}
       {d?.points?.length ? (
@@ -39,6 +39,7 @@ const { Content } = entry ? await entry.render() : { Content: null };
 </section>
 <style>
 .about-body p{color:var(--mut);line-height:1.75}
+.split .section-head{padding:0;margin:0 0 16px}
 .teamcol{display:flex;flex-direction:column;gap:14px}
 .teamcol .kicker{margin:0 0 2px}
 .teamcol .tcard:first-of-type{margin-top:6px}

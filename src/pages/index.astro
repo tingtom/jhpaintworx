@@ -15,6 +15,7 @@ cats.forEach(c => labels[c.slug] = c.data.label);
 const ICONS = { truck: Truck, tractor: Tractor, sparkles: Sparkles, hammer: Hammer, crosshair: Crosshair, factory: Factory } as Record<string, any>;
 const cmsServices = await getCollection('services');
 const services = cmsServices.sort((a, b) => a.data.order - b.data.order);
+const aboutImg = (await getCollection('about'))[0]?.data.image;
 ---
 <Base title="Professional Automotive Spray Painting">
 <HeroSlider />
@@ -43,7 +44,7 @@ const services = cmsServices.sort((a, b) => a.data.order - b.data.order);
       <p><a class="btn" href={`${base}about/`}>More about us →</a></p>
     </div>
     <div>
-      <img class="frame" src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1000&auto=format&fit=crop" alt="Classic car paintwork" loading="lazy" />
+      <img class="frame" src={aboutImg || 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1000&auto=format&fit=crop'} alt="The JH Paintworx team" loading="lazy" />
     </div>
   </div>
 </section>

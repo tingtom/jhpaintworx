@@ -101,7 +101,19 @@ collections:
           - { label: Kicker, name: kicker, widget: string, default: "MEET THE TEAM" }
           - { label: Heading, name: title, widget: string }
           - { label: Sub heading, name: sub, widget: text, required: false }
-          - { label: Page image, name: image, widget: image, required: false, hint: "Shown at the top-left of the Meet the team page" }
+          - label: Page image
+            name: image
+            widget: image
+            required: false
+            hint: "Shown at the top-left of the Meet the team page (and the homepage team section)"
+            media_libraries:
+              default:
+                config:
+                  transformations:
+                    raster_image:
+                      format: webp
+                      quality: 78
+                      width: 1200
           - { label: Lead paragraph, name: lead, widget: text, required: false }
           - { label: Bullet points, name: points, widget: list, required: false }
           - { label: Extra copy, name: body, widget: markdown, required: false }
@@ -112,7 +124,18 @@ collections:
             fields:
               - { label: Name, name: name, widget: string }
               - { label: Role, name: role, widget: string, required: false }
-              - { label: Photo, name: photo, widget: image, required: false }
+              - label: Photo
+                name: photo
+                widget: image
+                required: false
+                media_libraries:
+                  default:
+                    config:
+                      transformations:
+                        raster_image:
+                          format: webp
+                          quality: 80
+                          width: 800
               - { label: Blurb, name: blurb, widget: text, required: false }
 
       - name: contact
