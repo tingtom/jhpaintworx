@@ -2,6 +2,15 @@
 import { Phone, Clock, Menu, MapPin } from 'lucide-astro';
 import { getCollection } from 'astro:content';
 import SocialLinks from '../components/SocialLinks.astro';
+// Self-hosted fonts: no render-blocking request to fonts.googleapis.com.
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/archivo/500.css';
+import '@fontsource/archivo/600.css';
+import '@fontsource/archivo/700.css';
+import '@fontsource/archivo/800.css';
+import '@fontsource/archivo/900.css';
 interface Props { title: string; description?: string; }
 const { title, description = 'JH Paintworx – showroom paintwork for cars, bikes, commercials, plant & classics. Colour matching, panel repair, full resprays.' } = Astro.props;
 const base = import.meta.env.BASE_URL;
@@ -22,9 +31,6 @@ const cats = (await getCollection('categories')).sort((a, b) => a.data.order - b
 <title>{title} | JH Paintworx</title>
 <meta name="description" content={description} />
 <link rel="icon" type="image/png" href={`${base}favicon.png`} />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 <style is:global>
 :root{--navy:#0f2440;--navy2:#1a3556;--red:#c1272d;--red2:#a11f25;--cream:#f6eac5;--ink:#101c2c;--mut:#5b6b80;--line:#e8edf3;--card:#fff;--hdr:108px}
 *{box-sizing:border-box}html{scroll-behavior:smooth;overflow-x:hidden}

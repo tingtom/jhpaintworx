@@ -59,8 +59,8 @@ collections:
     fields:
       - { label: Title, name: title, widget: string }
       - { label: Category, name: category, widget: select, options: [cars, classics-historic, commercial, motorcycles, motorsport], hint: "Match the slug of a Workshop category" }
-      # Workshop cards are small; images are still big enough (1200px) to open
-      # full-screen when clicked, and get downscaled on upload for a fast page.
+      # Workshop images are big enough to open near-full-screen when clicked but
+      # sized for card + lightbox-at-device-pixel density; compressed on upload.
       - label: Images
         name: images
         widget: image
@@ -73,8 +73,8 @@ collections:
               transformations:
                 raster_image:
                   format: webp
-                  quality: 75
-                  width: 1200
+                  quality: 72
+                  width: 1000
       - { label: Date, name: date, widget: datetime, required: false }
       - { label: Featured on homepage, name: featured, widget: boolean, default: false }
       - { label: Description, name: description, widget: text, required: false, hint: "Shown under the job title on cards" }
