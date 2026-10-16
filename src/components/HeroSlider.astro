@@ -77,16 +77,23 @@ const payload = slides.map(s => ({ title: s.data.title, text: s.data.text, capti
   };
   const next = () => show(i + 1);
   const prev = () => show(i - 1);
-  const start = () => { timer = setInterval(next, 4500); };
   const stop = () => clearInterval(timer);
+  // stop() before (re)starting so a stray double fire (a tap fires touchend and
+  // the synthetic mouse events together) can never leave two timers racing,
+  // which made the slider flip to an image and straight off it again.
+  const start = () => { stop(); timer = setInterval(next, 4500); };
   dots.forEach((d) => d.addEventListener('click', () => { stop(); show(+d.dataset.i); start(); }));
   hero.addEventListener('mouseenter', stop);
   hero.addEventListener('mouseleave', start);
   hero.addEventListener('touchstart', (e) => { stop(); hero._sx = e.touches[0].clientX; }, { passive: true });
+  // A cancelled touch still ended the pause, so restart the auto-advance.
+  hero.addEventListener('touchcancel', start, { passive: true });
   hero.addEventListener('touchend', (e) => {
     const dx = (hero._sx || 0) - (e.changedTouches[0].clientX || 0);
     if (Math.abs(dx) > 40) { dx > 0 ? next() : prev(); }
     start();
   });
-  show(0); start();
+  // Begin on a different slide each visit.
+  show(Math.floor(Math.random() * slides.length));
+  start();
 </script>
