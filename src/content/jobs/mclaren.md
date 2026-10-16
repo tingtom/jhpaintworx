@@ -1,5 +1,5 @@
 ---
-title: McLaren
+title: McLaren 570s
 category: cars
 images:
   - /jhpaintworx/images/uploads/pasted-image-1792141454854.webp
