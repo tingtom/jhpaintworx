@@ -62,6 +62,7 @@ const about = defineCollection({
     kicker: z.string().default('MEET THE TEAM'),
     title: z.string(),
     sub: z.string().default(''),
+    image: z.string().optional(),
     lead: z.string().default(''),
     points: z.array(z.string()).default([]),
     team: z.array(z.object({

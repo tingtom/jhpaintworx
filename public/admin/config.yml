@@ -77,8 +77,7 @@ collections:
                   width: 1200
       - { label: Date, name: date, widget: datetime, required: false }
       - { label: Featured on homepage, name: featured, widget: boolean, default: false }
-      - { label: Description, name: description, widget: text, required: false }
-      - { label: Body, name: body, widget: markdown, required: false }
+      - { label: Description, name: description, widget: text, required: false, hint: "Shown under the job title on cards" }
 
   - name: services
     label: Services
@@ -102,6 +101,7 @@ collections:
           - { label: Kicker, name: kicker, widget: string, default: "MEET THE TEAM" }
           - { label: Heading, name: title, widget: string }
           - { label: Sub heading, name: sub, widget: text, required: false }
+          - { label: Page image, name: image, widget: image, required: false, hint: "Shown at the top-left of the Meet the team page" }
           - { label: Lead paragraph, name: lead, widget: text, required: false }
           - { label: Bullet points, name: points, widget: list, required: false }
           - { label: Extra copy, name: body, widget: markdown, required: false }
