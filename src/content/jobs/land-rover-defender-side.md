@@ -1,5 +1,5 @@
 ---
-title: Land Rover Defender side
+title: Land Rover Defender Side
 category: cars
 images:
   - /jhpaintworx/images/uploads/pasted-image-1792100078871.webp
