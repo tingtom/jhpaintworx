@@ -15,7 +15,8 @@ cats.forEach(c => labels[c.slug] = c.data.label);
 const ICONS = { truck: Truck, tractor: Tractor, sparkles: Sparkles, hammer: Hammer, crosshair: Crosshair, factory: Factory } as Record<string, any>;
 const cmsServices = await getCollection('services');
 const services = cmsServices.sort((a, b) => a.data.order - b.data.order);
-const aboutImg = (await getCollection('about'))[0]?.data.image;
+const aboutData = (await getCollection('about'))[0]?.data;
+const aboutImg = aboutData?.image;
 ---
 <Base title="Professional Automotive Spray Painting">
 <HeroSlider />
@@ -38,9 +39,8 @@ const aboutImg = (await getCollection('about'))[0]?.data.image;
 <section class="block">
   <div class="split wrap">
     <div>
-      <div class="section-head" style="padding:0;margin:0 0 8px"><p class="kicker">MEET THE TEAM</p><h2>A paint shop that sweats the prep.</h2></div>
-      <p class="lead">At JH Paintworx we refresh, restore and reimagine vehicles with flawless finishes and obsessive attention to detail. From commercial fleets and plant-hire machinery to cherished classics, outstanding results every time.</p>
-      <p class="mut">No "that'll do". Panels are stripped, filled, primed and flatted until they're right — then colour and lacquer go on in a controlled booth.</p>
+      <div class="section-head" style="padding:0;margin:0 0 8px"><p class="kicker">{aboutData?.kicker || 'MEET THE TEAM'}</p><h2>{aboutData?.title || 'A paint shop that sweats the prep.'}</h2>{aboutData?.sub && <p class="sub">{aboutData.sub}</p>}</div>
+      {aboutData?.lead && <p class="lead">{aboutData.lead}</p>}
       <p><a class="btn" href={`${base}about/`}>More about us →</a></p>
     </div>
     <div>

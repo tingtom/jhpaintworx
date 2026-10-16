@@ -12,7 +12,6 @@ const { Content } = entry ? await entry.render() : { Content: null };
   <div class="split wrap">
     <div>
       <div class="section-head"><p class="kicker">{d?.kicker ?? 'MEET THE TEAM'}</p><h1>{d?.title ?? 'A paint shop that sweats the prep.'}</h1><p class="sub">{d?.sub ?? ''}</p></div>
-      {d?.image && <img class="frame" src={d.image} alt={d.title || 'The JH Paintworx team'} loading="eager" decoding="async" />}
       {d?.lead && <p class="lead">{d.lead}</p>}
       {d?.points?.length ? (
         <ul>
@@ -21,6 +20,7 @@ const { Content } = entry ? await entry.render() : { Content: null };
       ) : null}
       {Content && <div class="about-body"><Content /></div>}
       <p><a class="btn" href={`${base}workshop/`}>See the proof →</a></p>
+      {d?.image && <img class="frame" src={d.image} alt={d.title || 'The JH Paintworx team'} loading="lazy" decoding="async" />}
     </div>
     <div class="teamcol">
       <p class="kicker">THE TEAM</p>
@@ -40,7 +40,7 @@ const { Content } = entry ? await entry.render() : { Content: null };
 <style>
 .about-body p{color:var(--mut);line-height:1.75}
 .split .section-head{padding:0;margin:0 0 16px}
-.split img.frame{margin-bottom:14px}
+.split img.frame{margin:18px 0 0}
 .teamcol{display:flex;flex-direction:column;gap:14px}
 .teamcol .kicker{margin:0 0 2px}
 .teamcol .tcard:first-of-type{margin-top:6px}
