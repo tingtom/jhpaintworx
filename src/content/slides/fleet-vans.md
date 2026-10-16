@@ -1,8 +1,0 @@
----
-title: Showroom paintwork for cars, bikes & commercials.
-order: 3
-image: https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=2000&auto=format&fit=crop
-text: Full resprays, panel repairs, colour matching and custom refinishing — prepped properly, painted properly, built to last.
-caption: Fleet vans — livery-matched, minimal downtime.
----
-Fleet van refresh.
