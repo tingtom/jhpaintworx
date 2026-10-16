@@ -1,5 +1,5 @@
 ---
-title: Ford escort respray
+title: Ford Escort MK2 Respray
 category: classics-historic
 images:
   - /jhpaintworx/images/uploads/pasted-image-1792099972049.webp
