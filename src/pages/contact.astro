@@ -9,8 +9,10 @@ const phone = settings?.phone || '01933 422290';
 const tel = `tel:${phone.replace(/[^\+\d]/g, '')}`;
 const hours = settings?.hours || 'Mon–Fri 07:30–17:30';
 const address = settings?.address || '';
-// FormSubmit (formsubmit.app) form ID, set in Admin under Business details.
-// Submissions POST to https://formsubmit.app/f/{formId} with files attached.
+// FormSubmit (formsubmit.co) endpoint ID or email, set in Admin under Business
+// details. Per docs: POST {FormData} to https://formsubmit.co/{id} with
+// multipart/form-data; files up to 10MB total. If no ID is set the form is
+// disabled with a phone fallback.
 const formId = settings?.formId || '';
 const cats = await getCollection('categories');
 const mapLat = settings?.mapLat ?? 0;
@@ -52,12 +54,13 @@ const mapSrc = hasMap
       <label>Details<textarea name="message" rows="5" required placeholder="e.g. Focus ST bonnet + bumper stone chips, photos to follow…"></textarea></label>
       <label class="filelabel">Photos of the damage <span class="opt">(optional)</span>
         <input type="file" name="attachment" accept="image/*" multiple />
-        <span class="filehint">JPG or PNG, up to about 4.5MB in total · photos get you the fastest, most accurate quote</span>
+        <span class="filehint">JPG or PNG, up to about 10MB in total · photos get you the fastest, most accurate quote</span>
       </label>
       <p class="filenames" id="filenames"></p>
       <button class="btn" type="submit">Send enquiry →</button>
       <p id="status"></p>
-      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="display:none" />
+      <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none" />
+      <input type="hidden" name="_captcha" value="false" />
     </form>
   </div>
 </section>
@@ -74,45 +77,59 @@ const mapSrc = hasMap
 .filenames{font-size:13.5px;color:var(--mut);line-height:1.6;margin:10px 0 0}
 </style>
 <script define:vars={{ formId, phone }}>
+// FormSubmit.co: per their docs, attachments only flow through the normal
+// form endpoint (multipart/form-data), not /ajax/{email}. We POST the FormData
+// to https://formsubmit.co/{id} and ask for JSON; if something odd comes back
+// we fall back to a plain page post so the photos still get delivered.
 const form = document.getElementById('qform');
 const status = document.getElementById('status');
 const filenames = document.getElementById('filenames');
-// FormSubmit plain multipart posts cap the whole request at ~4.5MB.
-const MAX_TOTAL = 4.4 * 1024 * 1024;
+// FormSubmit.co caps the summed file sizes at 10MB per submission.
+const MAX_TOTAL = 9.5 * 1024 * 1024;
 form?.querySelector('input[type=file]')?.addEventListener('change', (e) => {
   const files = [...e.target.files];
   filenames.textContent = files.length
     ? files.map(f => `${f.name} (${(f.size / 1048576).toFixed(1)}MB)`).join('\n')
     : '';
 });
+const sent = () => {
+  status.textContent = 'Sent. We’ll be in touch shortly.';
+  form.reset();
+  filenames.textContent = '';
+};
 form?.addEventListener('submit', async (e) => {
   e.preventDefault();
   if (!formId) { status.textContent = `Form not set up yet, please call ${phone}.`; return; }
   const files = [...form.querySelectorAll('input[type=file]')[0].files];
   const totalSize = files.reduce((n, f) => n + f.size, 0);
   if (totalSize > MAX_TOTAL) {
-    status.textContent = `Those photos add up to more than 4.5MB. Please send fewer or smaller ones, or call ${phone}.`;
+    status.textContent = `Those photos add up to more than 10MB. Please send fewer or smaller ones, or call ${phone}.`;
     return;
   }
   status.textContent = files.length ? 'Sending photos…' : 'Sending…';
   try {
-    const r = await fetch(`https://formsubmit.app/f/${formId}`, {
+    const r = await fetch(`https://formsubmit.co/${formId}`, {
       method: 'POST',
-      headers: { Accept: 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+      headers: { Accept: 'application/json' },
       body: new FormData(form),
     });
-    let data = null;
-    try { data = await r.json(); } catch {}
-    if (r.ok && data?.ok) {
-      status.textContent = 'Sent. We’ll be in touch shortly.';
-      form.reset();
-      filenames.textContent = '';
-    } else if (data?.error?.code === 'payload_too_large' || data?.error?.code === 'file_too_large') {
-      status.textContent = `Those photos are too large to send together. Please send fewer or smaller ones, or call ${phone}.`;
+    const type = r.headers.get('content-type') || '';
+    if (type.includes('json')) {
+      const data = await r.json();
+      const ok = data.success === true || data.success === 'true';
+      if (ok) sent();
+      else status.textContent = data.message || `Send failed, please call ${phone}.`;
+    } else if (r.ok) {
+      // Redirect/HTML response: the submission was accepted anyway.
+      sent();
     } else {
       status.textContent = `Send failed, please call ${phone}.`;
     }
-  } catch { status.textContent = `Send failed, please call ${phone}.`; }
+  } catch {
+    // Network-level failure: fall back to the browser's regular multipart form
+    // post, which is the documented attachment path.
+    form.submit();
+  }
 });
 </script>
 </Base>

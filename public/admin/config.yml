@@ -165,7 +165,7 @@ singletons:
       - { label: Opening hours, name: hours, widget: string, hint: "Shown in the top bar" }
       - { label: Address, name: address, widget: text, required: false, hint: "Shown in the footer and on the contact page" }
       - { label: Contact form email, name: email, widget: string, required: false, hint: "Legacy setting from the old form service; no longer needed" }
-      - { label: FormSubmit form ID, name: formId, widget: string, required: false, hint: "From formsubmit.app > Forms: the ID in the endpoint after /f/ (e.g. https://formsubmit.app/f/XXXXXXXX)." }
+      - { label: FormSubmit form ID, name: formId, widget: string, required: false, hint: "fromsubmit.co: the email address you activated with FormSubmit, or the random string they gave you (e.g. 58f9d5...); both work as the form endpoint" }
       - { label: Facebook URL, name: facebook, widget: string, required: false, hint: "Leave blank to hide the Facebook icon" }
       - { label: Instagram URL, name: instagram, widget: string, required: false, hint: "Leave blank to hide the Instagram icon" }
       - { label: Map latitude, name: mapLat, widget: number, value_type: float, required: false, hint: "Map pin on the contact page — right-click the spot on openstreetmap.org and pick 'Show address'" }
