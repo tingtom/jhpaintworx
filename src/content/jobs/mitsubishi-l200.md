@@ -1,6 +1,6 @@
 ---
 title: Mitsubishi L200
-category: cars
+category: classics-historic
 images:
   - /jhpaintworx/images/uploads/pasted-image-1792138287504.webp
   - /jhpaintworx/images/uploads/pasted-image-1792138294953.webp
