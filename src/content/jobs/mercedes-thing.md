@@ -1,5 +1,5 @@
 ---
-title: Mercedes thing
+title: Mercedes Arocs 3251 Suction Unit
 category: commercial
 images:
   - /jhpaintworx/images/uploads/pasted-image-1792140306851.webp
