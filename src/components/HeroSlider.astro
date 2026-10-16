@@ -23,7 +23,7 @@ const payload = slides.map(s => ({ title: s.data.title, text: s.data.text, capti
 ---
 <div class="hero" id="hero">
   {slides.map((s, i) => (
-    <img class="hero-slide" data-i={i} src={s.data.image} alt={s.data.caption || s.data.title} loading={i === 0 ? 'eager' : 'lazy'} />
+    <img class="hero-slide" data-i={i} src={i === 0 ? s.data.image : undefined} data-src={i === 0 ? undefined : s.data.image} alt={s.data.caption || s.data.title} loading={i === 0 ? 'eager' : 'lazy'} />
   ))}
   <div class="shade"></div>
   <div class="hero-inner">
@@ -65,6 +65,9 @@ const payload = slides.map(s => ({ title: s.data.title, text: s.data.text, capti
   let i = 0, timer;
   const show = (n) => {
     i = ((n % slides.length) + slides.length) % slides.length;
+    // A slide's image only downloads the first time it is shown (data-src deferral).
+    const img = slides[i];
+    if (!img.getAttribute('src') && img.dataset.src) img.src = img.dataset.src;
     slides.forEach((s, k) => s.style.opacity = k === i ? '1' : '0');
     const d = payload[i];
     if (d.title) title.textContent = d.title;

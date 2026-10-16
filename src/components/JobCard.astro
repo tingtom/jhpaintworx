@@ -11,7 +11,7 @@ const imgs: string[] = job.data.images?.length
 <article class="job">
   <div class="im">
     {imgs.map((src, i) => (
-      <img class:list={['slide', { on: i === 0 }]} data-i={i} src={src} alt={job.data.title} loading={i === 0 ? 'eager' : 'lazy'} />
+      <img class:list={['slide', { on: i === 0 }]} data-i={i} src={i === 0 ? src : undefined} data-src={i === 0 ? undefined : src} alt={job.data.title} loading="lazy" />
     ))}
     {imgs.length > 1 && (
       <>
@@ -35,13 +35,13 @@ const imgs: string[] = job.data.images?.length
   .lightbox{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;background:rgba(8,14,24,.93)}
   .lightbox.on{display:flex}
   .lightbox img{max-width:92vw;max-height:88vh;object-fit:contain;box-shadow:0 20px 60px rgba(0,0,0,.5)}
-  .lightbox button{position:absolute;width:44px;height:44px;padding:0;border-radius:50%;border:1px solid rgba(255,255,255,.55);background:rgba(11,22,38,.55);color:#fff;cursor:pointer;display:grid;place-items:center;font-size:22px;line-height:1;transition:.2s;backdrop-filter:blur(4px)}
+  .lightbox button{position:absolute;width:60px;height:60px;padding:0;border-radius:50%;border:1px solid rgba(255,255,255,.55);background:rgba(11,22,38,.55);color:#fff;cursor:pointer;display:grid;place-items:center;font-size:34px;line-height:1;transition:.2s;backdrop-filter:blur(4px)}
   .lightbox button:hover{background:var(--red,#c1272d);border-color:var(--red,#c1272d)}
   .lb-x{top:20px;right:20px}
   .lb-p{left:16px;top:50%;transform:translateY(-50%)}
   .lb-n{right:16px;top:50%;transform:translateY(-50%)}
   .lb-c{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);font-size:12px;font-weight:700;color:#fff;background:rgba(11,22,38,.55);border-radius:999px;padding:4px 10px;letter-spacing:.04em}
-  @media(max-width:600px){.lb-p{left:8px}.lb-n{right:8px}}
+  @media(max-width:600px){.lb-p{left:8px}.lb-n{right:8px}.lightbox button{width:48px;height:48px;font-size:28px}}
 </style>
 <style>
 .jarrow:hover{background:var(--red);border-color:var(--red)}
@@ -101,6 +101,9 @@ const imgs: string[] = job.data.images?.length
     if (slides.length > 1) {
       const show = (n: number) => {
         i = (n + slides.length) % slides.length;
+        // Each image only downloads the first time it is shown (data-src deferral).
+        const img = slides[i] as HTMLImageElement;
+        if (!img.getAttribute('src') && img.dataset.src) img.src = img.dataset.src;
         slides.forEach((s, k) => s.classList.toggle('on', k === i));
         if (count) count.textContent = String(i + 1);
       };
@@ -113,7 +116,7 @@ const imgs: string[] = job.data.images?.length
     // Click the card image to open the full-size lightbox at the current slide.
     im.addEventListener('click', (e) => {
       if ((e.target as HTMLElement).closest('.jarrow') || (e.target as HTMLElement).closest('.jcount')) return;
-      lbOpen(slides.map((s) => (s as HTMLImageElement).src), i);
+      lbOpen(slides.map((s) => (s as HTMLImageElement).src || (s as HTMLImageElement).dataset.src || ''), i);
     });
   });
 </script>

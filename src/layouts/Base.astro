@@ -135,10 +135,11 @@ footer .addr{white-space:pre-line}
 footer .fsocial a{display:grid;place-items:center;flex:0 0 auto;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.25);color:#d6e0ec;transition:.15s}
 footer .fsocial a:hover{background:var(--red);border-color:var(--red);color:#fff}
 footer .fsocial svg{display:block;width:17px;height:17px;margin:0}
-footer p{line-height:1.4;margin:0 0 .15em}
+footer p{line-height:1.4;margin:0 0 .15em;font-size:13px}
+footer .tag{margin-bottom:16px}
 footer a{color:#d6e0ec;text-decoration:none;font-size:14px;border-bottom:1px solid transparent;transition:border-color .15s,color .15s}
 footer a:hover{color:var(--cream);border-bottom-color:var(--cream)}
-footer a.tel{font-weight:700;font-size:17px;color:#fff;letter-spacing:.02em}
+footer a.tel{font-weight:700;font-size:15px;color:#fff;letter-spacing:.02em}
 footer a.tel:hover{color:var(--cream)}
 form.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px;max-width:640px;box-shadow:0 8px 28px rgba(16,28,44,.07)}
 form.card label{font-weight:600;font-size:14px;display:block;margin-top:16px;color:var(--ink)}
@@ -178,10 +179,10 @@ form.card button{margin-top:18px}
 <slot />
 <footer>
 <div class="cols">
-<div><h4>JH PAINTWORX LTD <span class="copy">© {new Date().getFullYear()}</span></h4><p>Showroom paintwork, panel repair and custom refinishing for cars, bikes, vans, commercials, plant and classics.</p><p><a class="tel" href={tel}><Phone size={15} /> {phone}</a></p><p><Clock size={15} /> {hours} <span>· Sat by appointment</span></p>{settings?.address && <p class="addr"><MapPin size={15} /> {settings.address}</p>}
+<div><h4>JH PAINTWORX LTD <span class="copy">© {new Date().getFullYear()}</span></h4><p class="tag">Showroom paintwork, panel repair and custom refinishing for cars, bikes, vans, commercials, plant and classics.</p><p><a class="tel" href={tel}><Phone size={14} /> {phone}</a></p><p><Clock size={14} /> {hours} <span>· Sat by appointment</span></p>{settings?.address && <p class="addr"><MapPin size={14} /> {settings.address}</p>}
   <SocialLinks class="fsocial" />
 </div>
-<div><h4>EXPLORE</h4><p>{cats.map((c, i) => (<Fragment><a href={`${base}workshop/${c.slug}/`}>{c.data.label}</a>{i < cats.length - 1 ? ' · ' : ''}</Fragment>))}<br /><a href={`${base}services/`}>Services</a><br /><a href={`${base}about/`}>Meet the team</a><br /><a href={`${base}contact/`}>Contact</a> · <a href={`${base}contact/`}>Get a quote</a></p></div>
+<div><h4>EXPLORE</h4><p>{cats.map((c, i) => (<Fragment><a href={`${base}workshop/${c.slug}/`}>{c.data.label}</a>{i < cats.length - 1 ? ' · ' : ''}</Fragment>))}<br /><a href={`${base}services/`}>Services</a><br /><a href={`${base}about/`}>Meet the team</a><br /><a href={`${base}contact/`}>Contact</a></p></div>
 </div>
 </footer>
 </body>
