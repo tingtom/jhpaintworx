@@ -23,7 +23,7 @@ collections:
     fields:
       - { label: Heading (top slide only shows), name: title, widget: string }
       - { label: Main text, name: text, widget: text }
-      # Homepage slider images are shown full-width, so they keep a high resolution.
+      # Homepage slider images are shown full-width; 1920 is fine for 1080p+ screens.
       - label: Image
         name: image
         widget: image
@@ -34,7 +34,7 @@ collections:
                 raster_image:
                   format: webp
                   quality: 90
-                  width: 2400
+                  width: 1920
       - { label: Caption (small line on slide), name: caption, widget: string, required: false }
       - { label: Order, name: order, widget: number, default: 0 }
 
@@ -59,13 +59,14 @@ collections:
     fields:
       - { label: Title, name: title, widget: string }
       - { label: Category, name: category, widget: select, options: [cars, classics-historic, commercial, motorcycles, motorsport], hint: "Match the slug of a Workshop category" }
-      # Workshop cards are small, so the images are downscaled on upload to keep the page fast.
+      # Workshop cards are small; images are still big enough (1200px) to open
+      # full-screen when clicked, and get downscaled on upload for a fast page.
       - label: Images
         name: images
         widget: image
         multiple: true
         required: false
-        hint: "Add several — the workshop page shows left/right arrows to browse them"
+        hint: "Add several — the workshop page shows left/right arrows to browse them; click a photo to open it full-screen"
         media_libraries:
           default:
             config:
@@ -73,7 +74,7 @@ collections:
                 raster_image:
                   format: webp
                   quality: 75
-                  width: 1400
+                  width: 1200
       - { label: Date, name: date, widget: datetime, required: false }
       - { label: Featured on homepage, name: featured, widget: boolean, default: false }
       - { label: Description, name: description, widget: text, required: false }

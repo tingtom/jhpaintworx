@@ -1,13 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
 import HeroSlider from '../components/HeroSlider.astro';
+import JobCard from '../components/JobCard.astro';
 import { getCollection } from 'astro:content';
 import { Truck, Tractor, Sparkles, Hammer, Crosshair, Factory } from 'lucide-astro';
 const base = import.meta.env.BASE_URL;
 const jobs = await getCollection('jobs');
 const featured = jobs.filter(j => j.data.featured).slice(0, 6);
 const showJobs = featured.length ? featured : jobs.slice(0, 6);
-const img = (j: any) => (j.data.images?.length ? j.data.images[0] : j.data.image) ?? `https://picsum.photos/seed/${j.slug}/800/600`;
 const cats = (await getCollection('categories')).sort((a, b) => a.data.order - b.data.order);
 const labels: Record<string,string> = {};
 cats.forEach(c => labels[c.slug] = c.data.label);
@@ -56,10 +56,7 @@ const services = cmsServices.sort((a, b) => a.data.order - b.data.order);
   </div>
   <div class="grid wrap">
     {showJobs.map(j => (
-      <article class="job">
-        <div class="im"><img src={img(j)} alt={j.data.title} loading="lazy" /><span class="cat">{labels[j.data.category] ?? j.data.category}</span></div>
-        <div class="p"><h3>{j.data.title}</h3><p>{j.data.description ?? ''}</p></div>
-      </article>
+      <JobCard job={j} label={labels[j.data.category] ?? j.data.category} />
     ))}
   </div>
 </section>
