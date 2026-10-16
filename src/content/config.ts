@@ -93,6 +93,7 @@ const settings = defineCollection({
     hours: z.string().default('Mon–Fri 07:30–17:30'),
     address: z.string().default(''),
     email: z.string().default(''),
+    formId: z.string().default(''),
     facebook: z.string().default(''),
     instagram: z.string().default(''),
     mapLat: z.coerce.number().optional(),

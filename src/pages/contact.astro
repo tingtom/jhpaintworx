@@ -9,9 +9,9 @@ const phone = settings?.phone || '01933 422290';
 const tel = `tel:${phone.replace(/[^\+\d]/g, '')}`;
 const hours = settings?.hours || 'Mon–Fri 07:30–17:30';
 const address = settings?.address || '';
-// GitHub Pages builds set this var to '' when it isn't configured as a repo
-// variable, so use || (not ??) to fall back to the CMS email in that case.
-const email = import.meta.env.PUBLIC_CONTACT_EMAIL || settings?.email || '';
+// FormSubmit (formsubmit.app) form ID, set in Admin under Business details.
+// Submissions POST to https://formsubmit.app/f/{formId} with files attached.
+const formId = settings?.formId || '';
 const cats = await getCollection('categories');
 const mapLat = settings?.mapLat ?? 0;
 const mapLon = settings?.mapLon ?? 0;
@@ -25,7 +25,7 @@ const mapSrc = hasMap
   <div class="section-head"><p class="kicker">{contactData?.kicker ?? 'CONTACT'}</p><h1>{contactData?.title ?? 'Get a quote.'}</h1><p class="sub">{contactData?.sub ?? ''}</p></div>
   <div class="split wrap">
     <div>
-      <div class="scard"><h3><Phone size={20} /> <a href={tel}>{phone}</a></h3><p>{[hours, contactData?.phoneNote].filter(Boolean).join(' — ')}</p></div>
+      <div class="scard"><h3><Phone size={20} /> <a href={tel}>{phone}</a></h3><p>{[hours, contactData?.phoneNote].filter(Boolean).join(' · ')}</p></div>
       <div class="scard" style="margin-top:14px">
         <h3><MapPin size={20} /> Workshop</h3>
         {address && <p class="addr">{address}</p>}
@@ -47,16 +47,17 @@ const mapSrc = hasMap
     </div>
     <form class="card" id="qform">
       <label>Your name<input name="name" required placeholder="Jane Bloggs" autocomplete="name" /></label>
-      <label>Phone<input name="phone" type="tel" required placeholder="07…" autocomplete="tel" /></label>
+      <label>Phone<input name="phone" type="tel" required placeholder="07…" autocomplete="tel" inputmode="tel" pattern="[0-9+()\s-]{10,}" title="A real phone number, e.g. 07123 456789 or 01933 422290" /></label>
       <label>Vehicle / job type<select name="category">{cats.map(cat => <option value={cat.slug}>{cat.data.label}</option>)}</select></label>
       <label>Details<textarea name="message" rows="5" required placeholder="e.g. Focus ST bonnet + bumper stone chips, photos to follow…"></textarea></label>
       <label class="filelabel">Photos of the damage <span class="opt">(optional)</span>
         <input type="file" name="attachment" accept="image/*" multiple />
-        <span class="filehint">JPG or PNG, up to 5MB each — photos get you the fastest, most accurate quote.</span>
+        <span class="filehint">JPG or PNG, up to about 4.5MB in total · photos get you the fastest, most accurate quote</span>
       </label>
       <p class="filenames" id="filenames"></p>
       <button class="btn" type="submit">Send enquiry →</button>
       <p id="status"></p>
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="display:none" />
     </form>
   </div>
 </section>
@@ -72,11 +73,12 @@ const mapSrc = hasMap
 .filehint{display:block;font-weight:500;color:var(--mut);font-size:13px;margin-top:5px}
 .filenames{font-size:13.5px;color:var(--mut);line-height:1.6;margin:10px 0 0}
 </style>
-<script define:vars={{ email, phone }}>
+<script define:vars={{ formId, phone }}>
 const form = document.getElementById('qform');
 const status = document.getElementById('status');
 const filenames = document.getElementById('filenames');
-const MAX = 5 * 1024 * 1024;
+// FormSubmit plain multipart posts cap the whole request at ~4.5MB.
+const MAX_TOTAL = 4.4 * 1024 * 1024;
 form?.querySelector('input[type=file]')?.addEventListener('change', (e) => {
   const files = [...e.target.files];
   filenames.textContent = files.length
@@ -85,19 +87,32 @@ form?.querySelector('input[type=file]')?.addEventListener('change', (e) => {
 });
 form?.addEventListener('submit', async (e) => {
   e.preventDefault();
-  if (!email) { status.textContent = `Form email not configured yet — please call ${phone}.`; return; }
+  if (!formId) { status.textContent = `Form not set up yet, please call ${phone}.`; return; }
   const files = [...form.querySelectorAll('input[type=file]')[0].files];
-  if (files.some(f => f.size > MAX)) { status.textContent = 'One of those photos is over 5MB — please call ' + phone + ' to send it.'; return; }
+  const totalSize = files.reduce((n, f) => n + f.size, 0);
+  if (totalSize > MAX_TOTAL) {
+    status.textContent = `Those photos add up to more than 4.5MB. Please send fewer or smaller ones, or call ${phone}.`;
+    return;
+  }
   status.textContent = files.length ? 'Sending photos…' : 'Sending…';
   try {
-    const r = await fetch(`https://formsubmit.co/ajax/${email}`, {
+    const r = await fetch(`https://formsubmit.app/f/${formId}`, {
       method: 'POST',
-      headers: { Accept: 'application/json' },
+      headers: { Accept: 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
       body: new FormData(form),
     });
-    status.textContent = r.ok ? 'Sent — we’ll be in touch shortly.' : `Send failed — please call ${phone}.`;
-    if (r.ok) { form.reset(); filenames.textContent = ''; }
-  } catch { status.textContent = `Send failed — please call ${phone}.`; }
+    let data = null;
+    try { data = await r.json(); } catch {}
+    if (r.ok && data?.ok) {
+      status.textContent = 'Sent. We’ll be in touch shortly.';
+      form.reset();
+      filenames.textContent = '';
+    } else if (data?.error?.code === 'payload_too_large' || data?.error?.code === 'file_too_large') {
+      status.textContent = `Those photos are too large to send together. Please send fewer or smaller ones, or call ${phone}.`;
+    } else {
+      status.textContent = `Send failed, please call ${phone}.`;
+    }
+  } catch { status.textContent = `Send failed, please call ${phone}.`; }
 });
 </script>
 </Base>
