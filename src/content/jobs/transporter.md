@@ -1,5 +1,5 @@
 ---
-title: Volkswagen Crafter Two Toning
+title: VW Crafter Two Tone
 category: cars
 images:
   - /jhpaintworx/images/uploads/pasted-image-1792140534744.webp
