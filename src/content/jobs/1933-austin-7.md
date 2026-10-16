@@ -1,5 +1,5 @@
 ---
-title: 1933 Austin 7
+title: 1933 Austin 7 Coach built race car
 category: classics-historic
 images:
   - /jhpaintworx/images/uploads/pasted-image-1792141173284.webp
