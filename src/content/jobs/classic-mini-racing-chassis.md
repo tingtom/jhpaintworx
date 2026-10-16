@@ -1,6 +1,6 @@
 ---
 title: Classic Mini Miglia Shell
-category: classics-historic
+category: motorsport
 images:
   - /jhpaintworx/images/uploads/pasted-image-1792143162756.webp
   - /jhpaintworx/images/uploads/pasted-image-1792143150519.webp
