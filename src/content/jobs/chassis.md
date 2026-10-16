@@ -1,5 +1,5 @@
 ---
-title: Chassis
+title: MGB Chassis Rust Prevention
 category: cars
 images:
   - /jhpaintworx/images/uploads/pasted-image-1792142478298.webp
