@@ -1,5 +1,5 @@
 ---
-// Hero slider — full-width, auto-advancing, swipable, dot navigation.
+// Hero slider — full-width, auto-advancing, swipable.
 // Slides are CMS-editable: src/content/slides/*.md (Homepage hero slides).
 import { getCollection } from 'astro:content';
 const base = import.meta.env.BASE_URL;
@@ -34,9 +34,6 @@ const payload = slides.map(s => ({ title: s.data.title, text: s.data.text, capti
       <a class="btn ghost" href={`${base}contact/`}>Get a quote · {phone}</a>
     </div>
     <div class="hero-cap" id="hero-cap">{first.caption}</div>
-    <div class="hero-dots" id="hero-dots">
-      {slides.map((_, i) => <button class={i === 0 ? 'on' : ''} data-i={i} aria-label={`Slide ${i + 1}`} />)}
-    </div>
   </div>
 </div>
 
@@ -44,16 +41,13 @@ const payload = slides.map(s => ({ title: s.data.title, text: s.data.text, capti
 .hero{position:relative;color:#fff;overflow:hidden;background:#0b1a30;height:calc(100svh - var(--hdr,108px));min-height:440px}
 .hero-slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.1s ease;z-index:0}
 .hero .shade{position:absolute;inset:0;z-index:1;background:linear-gradient(100deg,rgba(11,22,38,.95) 25%,rgba(15,36,64,.5) 55%,rgba(193,39,45,.3))}
-.hero-inner{position:relative;z-index:2;padding:24px 20px 90px;max-width:1180px;margin:0 auto;display:flex;flex-direction:column;justify-content:flex-end;min-height:calc(100svh - var(--hdr,108px))}
+.hero-inner{position:relative;z-index:2;padding:24px 20px 60px;max-width:1180px;margin:0 auto;display:flex;flex-direction:column;justify-content:flex-end;min-height:calc(100svh - var(--hdr,108px))}
 .hero-title{font-size:clamp(30px,5.5vw,60px);font-weight:900;margin:0 0 12px;max-width:17ch;line-height:1.04}
 .hero-title span{color:var(--cream)}
 .hero-lead{font-size:clamp(15px,2vw,19px);color:#dbe4ef;max-width:56ch;line-height:1.6;margin:0 0 4px}
 .hero-cap{position:absolute;top:24px;right:20px;z-index:3;font-size:13px;font-weight:600;color:#cfe0f5;letter-spacing:.04em;max-width:40ch;text-align:right}
-.hero-dots{position:absolute;bottom:24px;right:20px;z-index:3;display:flex;gap:8px}
-.hero-dots button{width:34px;height:4px;border-radius:2px;background:rgba(255,255,255,.35);border:0;cursor:pointer;transition:.3s}
-.hero-dots button.on{background:var(--cream);width:46px}
 .btnrow{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
-@media(max-width:600px){.hero{min-height:380px}.hero-inner{padding-bottom:70px}.hero-cap{display:none}}
+@media(max-width:600px){.hero{min-height:380px}.hero-inner{padding-bottom:56px}.hero-cap{display:none}}
 </style>
 <script define:vars={{ payload }}>
   const hero = document.getElementById('hero');
@@ -61,7 +55,6 @@ const payload = slides.map(s => ({ title: s.data.title, text: s.data.text, capti
   const title = document.getElementById('hero-title');
   const lead = document.getElementById('hero-lead');
   const cap = document.getElementById('hero-cap');
-  const dots = hero.querySelectorAll('.hero-dots button');
   let i = 0, timer;
   const show = (n) => {
     i = ((n % slides.length) + slides.length) % slides.length;
@@ -73,7 +66,6 @@ const payload = slides.map(s => ({ title: s.data.title, text: s.data.text, capti
     if (d.title) title.textContent = d.title;
     if (d.text) lead.textContent = d.text;
     cap.textContent = d.caption || '';
-    dots.forEach((dot, k) => dot.classList.toggle('on', k === i));
   };
   const next = () => show(i + 1);
   const prev = () => show(i - 1);
@@ -82,7 +74,6 @@ const payload = slides.map(s => ({ title: s.data.title, text: s.data.text, capti
   // the synthetic mouse events together) can never leave two timers racing,
   // which made the slider flip to an image and straight off it again.
   const start = () => { stop(); timer = setInterval(next, 4500); };
-  dots.forEach((d) => d.addEventListener('click', () => { stop(); show(+d.dataset.i); start(); }));
   hero.addEventListener('mouseenter', stop);
   hero.addEventListener('mouseleave', start);
   hero.addEventListener('touchstart', (e) => { stop(); hero._sx = e.touches[0].clientX; }, { passive: true });
