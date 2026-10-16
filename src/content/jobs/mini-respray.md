@@ -1,5 +1,5 @@
 ---
-title: Mini respray
+title: Classic Mini Respray
 category: classics-historic
 images:
   - /jhpaintworx/images/uploads/pasted-image-1792099886457.webp
