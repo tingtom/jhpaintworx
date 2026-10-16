@@ -1,5 +1,5 @@
 ---
-title: Tesla rear quarter
+title: Tesla Rear Quarter
 category: cars
 images:
   - /jhpaintworx/images/uploads/pasted-image-1792099667181.webp
