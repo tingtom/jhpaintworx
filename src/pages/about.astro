@@ -19,8 +19,8 @@ const { Content } = entry ? await entry.render() : { Content: null };
         </ul>
       ) : null}
       {Content && <div class="about-body"><Content /></div>}
-      <p><a class="btn" href={`${base}workshop/`}>See the proof →</a></p>
       {d?.image && <img class="frame" src={d.image} alt={d.title || 'The JH Paintworx team'} loading="lazy" decoding="async" />}
+      <p><a class="btn" href={`${base}workshop/`}>See the proof →</a></p>
     </div>
     <div class="teamcol">
       <p class="kicker">THE TEAM</p>
@@ -40,7 +40,7 @@ const { Content } = entry ? await entry.render() : { Content: null };
 <style>
 .about-body p{color:var(--mut);line-height:1.75}
 .split .section-head{padding:0;margin:0 0 16px}
-.split img.frame{margin:18px 0 0}
+.split img.frame{margin:18px 0 14px}
 .teamcol{display:flex;flex-direction:column;gap:14px}
 .teamcol .kicker{margin:0 0 2px}
 .teamcol .tcard:first-of-type{margin-top:6px}
