@@ -6,16 +6,24 @@ image: /jhpaintworx/images/uploads/pasted-image-1792149162689.webp
 lead: At JH Paintworx we refresh, restore and reimagine vehicles with flawless finishes and obsessive attention to detail. From commercial fleets and plant-hire machinery to cherished classics, the team is committed to outstanding results every time.
 points: []
 team:
-  - name: Joe
-    role: Owner / lead sprayer
-    photo: https://picsum.photos/id/841/1920/1280.webp
-    blurb: Thirty-odd years round the booth. Colour matching, glass-out resprays and the final cut-and-polish.
-  - name: Hannah
-    role: Workshop coordinator
+  - name: James Hanvey
+    role: Owner
     photo: ''
-    blurb: Your first point of call — photo quotes, booking in and keeping fleet jobs moving.
+    blurb: ''
+  - name: Caroline
+    role: ''
+    photo: ''
+    blurb: ''
   - name: Mark
     role: Prep & panel
     photo: ''
-    blurb: Strip, fill, prime and flat. If it isn't straight, it doesn't get paint.
+    blurb: ''
+  - name: Marcin
+    role: Painter
+    photo: ''
+    blurb: ''
+  - name: Lizzy Arnold
+    role: Panel beater
+    photo: ''
+    blurb: ''
 ---
