@@ -23,7 +23,7 @@ const payload = slides.map(s => ({ title: s.data.title, text: s.data.text, capti
 ---
 <div class="hero" id="hero">
   {slides.map((s, i) => (
-    <img class="hero-slide" data-i={i} src={i === 0 ? s.data.image : undefined} data-src={i === 0 ? undefined : s.data.image} alt={s.data.caption || s.data.title} loading={i === 0 ? 'eager' : 'lazy'} />
+    <img class="hero-slide" data-i={i} src={i === 0 ? s.data.image : undefined} data-src={i === 0 ? undefined : s.data.image} alt={s.data.caption || s.data.title} loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : 'low'} />
   ))}
   <div class="shade"></div>
   <div class="hero-inner">

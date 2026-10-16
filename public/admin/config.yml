@@ -12,7 +12,7 @@ media_folder: public/images/uploads
 public_folder: /jhpaintworx/images/uploads
 site_url: https://tingtom.github.io/jhpaintworx/
 logo:
-  src: /jhpaintworx/logo.png
+  src: /jhpaintworx/logo.webp
 
 collections:
   - name: slides
