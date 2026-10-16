@@ -1,5 +1,5 @@
 ---
-title: Iveco lorry
+title: Iveco Lorry
 category: commercial
 images:
   - /jhpaintworx/images/uploads/pasted-image-1792140132496.webp
