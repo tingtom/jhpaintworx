@@ -1,5 +1,5 @@
 ---
-title: Isuzu
+title: Isuzu D-Max
 category: cars
 images:
   - /jhpaintworx/images/uploads/pasted-image-1792139794276.webp
