@@ -3,6 +3,8 @@ import { Phone, Clock, Menu, MapPin } from 'lucide-astro';
 import { getCollection } from 'astro:content';
 import SocialLinks from '../components/SocialLinks.astro';
 import { SITE_URL, absoluteUrl } from '../lib/seo';
+// Google Analytics measurement ID (gtag.js).
+const GA_ID = 'G-RRY2XJP51R';
 // Self-hosted fonts: no render-blocking request to fonts.googleapis.com.
 import '@fontsource/inter/400.css';
 import '@fontsource/inter/500.css';
@@ -68,6 +70,14 @@ const ld = {
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>{title} | {SITE_NAME}</title>
 <meta name="description" content={description} />
+<!-- Google tag (gtag.js) -->
+<script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}></script>
+<script is:inline define:vars={{ gaId: GA_ID }}>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', gaId);
+</script>
 <link rel="canonical" href={canonical} />
 <meta property="og:site_name" content={SITE_NAME} />
 <meta property="og:type" content="website" />
