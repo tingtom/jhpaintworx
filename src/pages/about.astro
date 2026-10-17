@@ -7,7 +7,7 @@ const entry = (await getCollection('about'))[0];
 const d = entry?.data;
 const { Content } = entry ? await entry.render() : { Content: null };
 ---
-<Base title="Meet the team">
+<Base title="Meet the team" description="Meet the team behind JH Paintworx and see the paintwork, preparation and proof straight from the workshop.">
 <section class="block">
   <div class="split wrap">
     <div>

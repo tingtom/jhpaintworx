@@ -22,7 +22,7 @@ const mapSrc = hasMap
   ? `https://www.openstreetmap.org/export/embed.html?bbox=${(mapLon! - 0.004).toFixed(5)},${(mapLat! - 0.0025).toFixed(5)},${(mapLon! + 0.004).toFixed(5)},${(mapLat! + 0.0025).toFixed(5)}&layer=mapnik&marker=${mapLat!.toFixed(5)},${mapLon!.toFixed(5)}`
   : '';
 ---
-<Base title="Contact – get a quote">
+<Base title="Contact – get a quote" description="Get a free quote for your car, van, motorhome or machinery. Send a few photos of the damage and we'll reply with the fastest, most accurate quote.">
 <section class="block">
   <div class="section-head"><p class="kicker">{contactData?.kicker ?? 'CONTACT'}</p><h1>{contactData?.title ?? 'Get a quote.'}</h1><p class="sub">{contactData?.sub ?? ''}</p></div>
   <div class="split wrap">

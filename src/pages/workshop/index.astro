@@ -9,7 +9,7 @@ cats.forEach(c => labels[c.slug] = c.data.label);
 const jobs = await getCollection('jobs');
 const workshop = (await getCollection('workshop'))[0]?.data ?? { title: 'Workshop', paragraph: '' };
 ---
-<Base title={workshop.title}>
+<Base title={workshop.title} description="Browse recent resprays and repairs from the JH Paintworx workshop, filtered by vehicle type. New jobs appear here automatically as they are finished.">
 <section class="block">
   <div class="section-head"><p class="kicker">WORKSHOP</p><h1>{workshop.title}</h1><p class="sub">{workshop.paragraph || 'Tap a category to filter. New jobs appear here automatically when added in Admin.'}</p></div>
   <div class="pills wrap">

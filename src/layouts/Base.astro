@@ -2,6 +2,7 @@
 import { Phone, Clock, Menu, MapPin } from 'lucide-astro';
 import { getCollection } from 'astro:content';
 import SocialLinks from '../components/SocialLinks.astro';
+import { SITE_URL, absoluteUrl } from '../lib/seo';
 // Self-hosted fonts: no render-blocking request to fonts.googleapis.com.
 import '@fontsource/inter/400.css';
 import '@fontsource/inter/500.css';
@@ -22,14 +23,66 @@ const phone = settings?.phone || '01933 422290';
 const tel = `tel:${phone.replace(/[^\+\d]/g, '')}`;
 const hours = settings?.hours || 'Mon–Fri 07:30–17:30';
 const cats = (await getCollection('categories')).sort((a, b) => a.data.order - b.data.order);
+
+// --- SEO helpers -----------------------------------------------------------
+const SITE_NAME = 'JH Paintworx';
+// Canonical path: the current URL minus the base path, so the tags describe
+// the final root-domain layout (https://jhpaintworx.co.uk/...).
+const canonical = absoluteUrl(
+  (path.startsWith(base) ? path.slice(base.length) : path).replace(/index\.html$/, '')
+);
+const img = absoluteUrl('og.jpg');
+// Structured data for the business, fed from the CMS settings entry.
+const intlPhone = `+44${phone.replace(/[^\d]/g, '').replace(/^0/, '')}`;
+const day = (w: string) => ({ Mon: 'Mo', Tue: 'Tu', Wed: 'We', Thu: 'Th', Fri: 'Fr', Sat: 'Sa', Sun: 'Su' }[w] ?? w);
+const openingHours = hours.replace(/[A-Za-z]{3}/g, day).replace(/\s*-\s*/g, '-');
+const addrParts = (settings?.address || '').split(',').map((s: string) => s.trim()).filter(Boolean);
+const addrLast = addrParts.pop() || '';
+const pcMatch = addrLast.match(/^(.*?)\s*([A-Z]{1,2}\d[A-Za-z\d]?\s*\d[A-Za-z]{2})$/) ?? [];
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'AutoRepair',
+  name: SITE_NAME,
+  url: `${SITE_URL}/`,
+  telephone: intlPhone,
+  image: img,
+  logo: absoluteUrl('logo.webp'),
+  openingHours,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: addrParts.join(', '),
+    addressLocality: pcMatch[1] || addrLast,
+    postalCode: pcMatch[2] || '',
+    addressCountry: 'GB',
+  },
+  geo: settings?.mapLat && settings?.mapLon
+    ? { '@type': 'GeoCoordinates', latitude: settings.mapLat, longitude: settings.mapLon }
+    : undefined,
+  sameAs: [settings?.facebook, settings?.instagram].filter(Boolean),
+};
 ---
 <!doctype html>
 <html lang="en-GB">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>{title} | JH Paintworx</title>
+<title>{title} | {SITE_NAME}</title>
 <meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<meta property="og:site_name" content={SITE_NAME} />
+<meta property="og:type" content="website" />
+<meta property="og:title" content={`${title} | ${SITE_NAME}`} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={img} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="en_GB" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={`${title} | ${SITE_NAME}`} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={img} />
+<script type="application/ld+json" set:html={JSON.stringify(ld)} />
 <link rel="icon" type="image/png" href={`${base}favicon.png`} />
 <style is:global>
 :root{--navy:#0f2440;--navy2:#1a3556;--red:#c1272d;--red2:#a11f25;--cream:#f6eac5;--ink:#101c2c;--mut:#5b6b80;--line:#e8edf3;--card:#fff;--hdr:108px}

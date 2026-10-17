@@ -20,7 +20,7 @@ const services = (cms.length ? cms : fallback)
   .sort((a, b) => a.data.order - b.data.order)
   .map(s => ({ ...s.data, slug: s.slug, body: s.body ?? '' }));
 ---
-<Base title="Services">
+<Base title="Services" description="Commercial vehicle and plant paintwork, full resprays, panel beating, expert colour matching and welding restoration, all finished in the booth.">
 <section class="block">
   <div class="section-head"><p class="kicker">SERVICES</p><h1>What the booth turns out.</h1><p class="sub">Every job gets the same discipline: strip back what's failed, build it flat, then lay colour and lacquer properly.</p></div>
   <div class="cards wrap">

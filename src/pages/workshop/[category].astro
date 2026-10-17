@@ -15,7 +15,7 @@ const heading = cat.data.title || cat.data.label;
 const jobs = await getCollection('jobs');
 const list = jobs.filter(j => j.data.category === cat.slug);
 ---
-<Base title={`${heading} workshop`}>
+<Base title={`${heading} workshop`} description={cat.data.description || `Recent ${heading.toLowerCase()} paintwork jobs from the JH Paintworx workshop.`}>
 <section class="block">
   <div class="section-head"><p class="kicker">WORKSHOP / {cat.data.label.toUpperCase()}</p><h1>{heading} workshop.</h1>{cat.data.description && <p class="sub">{cat.data.description}</p>}</div>
   <div class="pills wrap">
