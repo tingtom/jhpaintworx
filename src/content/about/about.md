@@ -35,7 +35,11 @@ team:
     photo: ''
     blurb: ''
   - name: Stacey Wesby
-    role: ''
+    role: Office
+    photo: ''
+    blurb: ''
+  - name: Bradley Cushion
+    role: Panel and Prep
     photo: ''
     blurb: ''
 ---
