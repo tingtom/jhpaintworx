@@ -10,20 +10,32 @@ team:
     role: Owner
     photo: ''
     blurb: ''
-  - name: Caroline
+  - name: Caroline Williams
     role: ''
     photo: ''
     blurb: ''
   - name: Mark
-    role: Prep & panel
+    role: Panel Beater
     photo: ''
     blurb: ''
-  - name: Marcin
+  - name: Marcin Stradza
     role: Painter
     photo: ''
     blurb: ''
   - name: Lizzy Arnold
-    role: Panel beater
+    role: Panel and Prep
+    photo: ''
+    blurb: ''
+  - name: Caelan Hanvey
+    role: ''
+    photo: ''
+    blurb: ''
+  - name: Shea Hanvey
+    role: ''
+    photo: ''
+    blurb: ''
+  - name: Stacey Wesby
+    role: ''
     photo: ''
     blurb: ''
 ---
