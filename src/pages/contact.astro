@@ -9,11 +9,10 @@ const phone = settings?.phone || '01933 422290';
 const tel = `tel:${phone.replace(/[^\+\d]/g, '')}`;
 const hours = settings?.hours || 'Mon–Fri 07:30–17:30';
 const address = settings?.address || '';
-// FormSubmit (formsubmit.co) endpoint ID or email, set in Admin under Business
-// details. Per docs: POST {FormData} to https://formsubmit.co/{id} with
-// multipart/form-data; files up to 10MB total. If no ID is set the form is
-// disabled with a phone fallback.
-const formId = settings?.formId || '';
+// Web3Forms access key, set in Admin under Business details. Text-only
+// submissions POST as FormData to https://api.web3forms.com/submit and come
+// back as JSON. If no key is set the form is disabled with a phone fallback.
+const accessKey = settings?.accessKey || '';
 const cats = await getCollection('categories');
 const mapLat = settings?.mapLat ?? 0;
 const mapLon = settings?.mapLon ?? 0;
@@ -22,7 +21,7 @@ const mapSrc = hasMap
   ? `https://www.openstreetmap.org/export/embed.html?bbox=${(mapLon! - 0.004).toFixed(5)},${(mapLat! - 0.0025).toFixed(5)},${(mapLon! + 0.004).toFixed(5)},${(mapLat! + 0.0025).toFixed(5)}&layer=mapnik&marker=${mapLat!.toFixed(5)},${mapLon!.toFixed(5)}`
   : '';
 ---
-<Base title="Contact – get a quote" description="Get a free quote for your car, van, motorhome or machinery. Send a few photos of the damage and we'll reply with the fastest, most accurate quote.">
+<Base title="Contact – get a quote" description="Get a free quote for your car, van, motorhome or machinery. Tell us about the vehicle and the damage and we'll reply with the fastest, most accurate quote.">
 <section class="block">
   <div class="section-head"><p class="kicker">{contactData?.kicker ?? 'CONTACT'}</p><h1>{contactData?.title ?? 'Get a quote.'}</h1><p class="sub">{contactData?.sub ?? ''}</p></div>
   <div class="split wrap">
@@ -51,18 +50,15 @@ const mapSrc = hasMap
       <label>Your name<input name="name" required placeholder="Jane Bloggs" autocomplete="name" /></label>
       <label>Phone<input name="phone" type="tel" required placeholder="07…" autocomplete="tel" inputmode="tel" maxlength="16" pattern="[0-9+\\(\\) .\\-]{10,16}" title="A real phone number, e.g. 07123 456789 or +44 7123 456789" /></label>
       <label>Vehicle / job type<select name="category">{cats.map(cat => <option value={cat.slug}>{cat.data.label}</option>)}</select></label>
-      <label>Details<textarea name="message" rows="5" required placeholder="e.g. Focus ST bonnet + bumper stone chips, photos to follow…"></textarea></label>
-      <label class="filelabel">Photos of the damage <span class="opt">(optional)</span>
-        <input type="file" name="attachment" accept="image/*" multiple />
-        <span class="filehint">JPG or PNG, several photos OK (up to 10MB in total) · photos get you the fastest, most accurate quote</span>
-      </label>
-      <p class="filenames" id="filenames"></p>
-      <div id="fsExtra"></div>
+      <label>Details<textarea name="message" rows="5" required placeholder="e.g. Focus ST bonnet + bumper stone chips…"></textarea></label>
+      <input type="hidden" name="access_key" value={accessKey} />
+      <input type="hidden" name="subject" value="New quote enquiry - JH Paintworx" />
+      <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="display:none" />
+      <div class="h-captcha" data-captcha="true"></div>
       <button class="btn" type="submit">Send enquiry →</button>
       <p id="status"></p>
-      <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none" />
-      <input type="hidden" name="_captcha" value="false" />
     </form>
+    <script src="https://web3forms.com/client/script.js" async defer></script>
   </div>
 </section>
 <style>
@@ -70,138 +66,53 @@ const mapSrc = hasMap
 .map{width:100%;height:240px;border:0;border-radius:12px;margin-top:14px;display:block}
 .mapcredit{font-size:11.5px;color:var(--mut);margin:6px 0 0}
 .mapcredit a{color:inherit;text-decoration:underline}
-.filelabel input[type=file]{margin-top:8px;font-size:14px;width:100%;color:var(--mut)}
-.filelabel input[type=file]::file-selector-button{margin-right:10px;padding:9px 14px;border:1px solid var(--navy);border-radius:9px;background:#fff;color:var(--navy);font:inherit;font-size:13.5px;font-weight:700;cursor:pointer;transition:.15s}
-.filelabel input[type=file]::file-selector-button:hover{background:var(--navy);color:#fff}
-.filelabel .opt{font-weight:500;color:var(--mut);font-size:13px}
-.filehint{display:block;font-weight:500;color:var(--mut);font-size:13px;margin-top:5px}
-.filenames{font-size:13.5px;color:var(--mut);line-height:1.6;margin:10px 0 0;white-space:pre-line}
-.filenames.over{color:var(--red);font-weight:700}
+.h-captcha{margin-top:16px}
 button[type=submit]:disabled{opacity:.5;cursor:not-allowed}
 </style>
-<script define:vars={{ formId, phone }}>
-// FormSubmit.co: per their docs, attachments only flow through the normal
-// form endpoint (multipart/form-data), not /ajax/{email}. We POST the FormData
-// to https://formsubmit.co/{id} and ask for JSON; if something odd comes back
-// we fall back to a plain page post so the photos still get delivered.
+<script define:vars={{ accessKey, phone }}>
+// Web3Forms (text-only free plan): POST the FormData to
+// https://api.web3forms.com/submit, which answers JSON {success, message}.
+// No custom headers, so the POST stays a CORS-simple request.
 const form = document.getElementById('qform');
 const status = document.getElementById('status');
-const filenames = document.getElementById('filenames');
-const fsExtra = document.getElementById('fsExtra');
 const phoneInput = form?.querySelector('input[name=phone]');
-const fileInput = form?.querySelector('input[type=file]');
-// FormSubmit.co caps the summed file sizes at 10MB per submission. We keep a
-// little headroom and check as soon as photos are picked, not only on send.
-const MAX_TOTAL = 10 * 1024 * 1024;
-const SEND_LIMIT = 9.5 * 1024 * 1024;
-const MAX_PHOTOS = 10;
 const sendBtn = form?.querySelector('button[type=submit]');
-const mb = (n) => `${(n / 1048576).toFixed(1)}MB`;
-const pickedFiles = () => [...form.querySelectorAll('input[type=file]')].flatMap(i => [...i.files]);
-let pickedCount = 0;
-let oversizeMsg = false;
-// List every photo, its size and the running total, and block Send while the
-// total is over the limit so the submission can never be rejected silently.
-const renderFiles = () => {
-  const files = pickedFiles();
-  const total = files.reduce((n, f) => n + f.size, 0);
-  const over = total > SEND_LIMIT;
-  filenames.textContent = files.length
-    ? files.map(f => `${f.name} (${mb(f.size)})`).join('\n')
-      + `\nTotal: ${mb(total)} of 10MB`
-      + (pickedCount > MAX_PHOTOS ? `\n(Only the first ${MAX_PHOTOS} photos can be sent.)` : '')
-    : '';
-  filenames.classList.toggle('over', over);
-  if (sendBtn) {
-    sendBtn.disabled = over;
-    sendBtn.title = over ? 'Photos are over the 10MB limit' : '';
-  }
-  if (over) {
-    status.textContent = `Those photos add up to ${mb(total)}, which is over FormSubmit's 10MB limit. Please remove or shrink some, or call ${phone}.`;
-    oversizeMsg = true;
-  } else if (oversizeMsg) {
-    status.textContent = '';
-    oversizeMsg = false;
-  }
-};
 // One real phone number: optional leading +44/+, then digits with the usual
 // separators. No letters anywhere.
 const PHONE_RE = /^[+]?[0-9 ().-]{10,16}$/;
-// FormSubmit.co documents several file *input fields* (not several files in
-// one field), so when the visitor picks multiple photos we move each photo
-// into its own hidden input named attachment2, attachment3, ... before submit.
-fileInput?.addEventListener('change', () => {
-  const files = [...fileInput.files];
-  pickedCount = files.length;
-  fsExtra.textContent = '';
-  if (files.length > 1) {
-    // Split over hidden clones; the visible picker holds only the first photo.
-    files.slice(1, MAX_PHOTOS).forEach((f, k) => {
-      const inp = document.createElement('input');
-      inp.type = 'file';
-      inp.name = `attachment${k + 2}`;
-      inp.hidden = true;
-      const dt = new DataTransfer();
-      dt.items.add(f);
-      inp.files = dt.files;
-      fsExtra.appendChild(inp);
-    });
-    const dt0 = new DataTransfer();
-    dt0.items.add(files[0]);
-    fileInput.files = dt0.files;
-  }
-  renderFiles();
-});
-const sent = () => {
-  status.textContent = 'Sent. We’ll be in touch shortly.';
-  fsExtra.textContent = '';
-  fileInput.value = '';
-  form.reset();
-  pickedCount = 0;
-  oversizeMsg = false;
-  renderFiles();
-};
 form?.addEventListener('submit', async (e) => {
   e.preventDefault();
-  if (!formId) { status.textContent = `Form not set up yet, please call ${phone}.`; return; }
+  if (!accessKey) { status.textContent = `Form not set up yet, please call ${phone}.`; return; }
   status.textContent = '';
-  oversizeMsg = false;
   if (!PHONE_RE.test(phoneInput.value.trim())) {
     status.textContent = 'Please enter a real phone number, e.g. 07123 456789.';
     phoneInput.focus();
     return;
   }
-  const files = pickedFiles();
-  const totalSize = files.reduce((n, f) => n + f.size, 0);
-  if (totalSize > MAX_TOTAL) {
-    status.textContent = `Those photos add up to ${mb(totalSize)}, over FormSubmit's 10MB limit. Please remove or shrink some, or call ${phone}.`;
-    oversizeMsg = true;
+  const captcha = form.querySelector('textarea[name=h-captcha-response]');
+  if (!captcha || !captcha.value) {
+    status.textContent = 'Please tick the captcha box before sending.';
     return;
   }
-  status.textContent = files.length ? 'Sending photos…' : 'Sending…';
+  status.textContent = 'Sending…';
+  sendBtn.disabled = true;
   try {
-    const r = await fetch(`https://formsubmit.co/${formId}`, {
+    const r = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
-      headers: { Accept: 'application/json' },
       body: new FormData(form),
     });
-    const type = r.headers.get('content-type') || '';
-    if (type.includes('json')) {
-      const data = await r.json();
-      const ok = data.success === true || data.success === 'true';
-      if (ok) sent();
-      else status.textContent = data.message || `Send failed, please call ${phone}.`;
-    } else if (r.ok) {
-      // Redirect/HTML response: the submission was accepted anyway.
-      sent();
+    const data = await r.json();
+    if (data.success) {
+      status.textContent = 'Sent. We’ll be in touch shortly.';
+      form.reset();
+      if (window.hcaptcha) { try { window.hcaptcha.reset(); } catch (err) {} }
     } else {
-      status.textContent = `Send failed, please call ${phone}.`;
+      status.textContent = data.message || `Send failed, please call ${phone}.`;
     }
   } catch {
-    // Network-level failure: fall back to the browser's regular multipart form
-    // post, which is the documented attachment path.
-    form.submit();
+    status.textContent = `Send failed, please call ${phone}.`;
   }
+  sendBtn.disabled = false;
 });
 </script>
 </Base>
