@@ -94,6 +94,7 @@ const settings = defineCollection({
     address: z.string().default(''),
     email: z.string().default(''),
     accessKey: z.string().default(''),
+    banner: z.string().default(''),
     facebook: z.string().default(''),
     instagram: z.string().default(''),
     mapLat: z.coerce.number().optional(),

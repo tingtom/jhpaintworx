@@ -166,6 +166,7 @@ singletons:
       - { label: Address, name: address, widget: text, required: false, hint: "Shown in the footer and on the contact page" }
       - { label: Contact form email, name: email, widget: string, required: false, hint: "Legacy setting from the old form service; no longer needed" }
       - { label: Web3Forms access key, name: accessKey, widget: string, required: false, hint: "From your web3forms.com form dashboard; safe to appear in the page source" }
+      - { label: Top banner message, name: banner, widget: text, required: false, hint: "Shown as a banner at the top of every page, e.g. holiday opening hours. Leave blank to hide it." }
       - { label: Facebook URL, name: facebook, widget: string, required: false, hint: "Leave blank to hide the Facebook icon" }
       - { label: Instagram URL, name: instagram, widget: string, required: false, hint: "Leave blank to hide the Instagram icon" }
       - { label: Map latitude, name: mapLat, widget: number, value_type: float, required: false, hint: "Map pin on the contact page — right-click the spot on openstreetmap.org and pick 'Show address'" }
