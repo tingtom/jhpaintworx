@@ -49,7 +49,7 @@ const mapSrc = hasMap
     </div>
     <form class="card" id="qform">
       <label>Your name<input name="name" required placeholder="Jane Bloggs" autocomplete="name" /></label>
-      <label>Phone<input name="phone" type="tel" required placeholder="07…" autocomplete="tel" inputmode="tel" maxlength="16" pattern="[0-9+() .-]{10,16}" title="A real phone number, e.g. 07123 456789 or +44 7123 456789" /></label>
+      <label>Phone<input name="phone" type="tel" required placeholder="07…" autocomplete="tel" inputmode="tel" maxlength="16" pattern="[0-9+\\(\\) .\\-]{10,16}" title="A real phone number, e.g. 07123 456789 or +44 7123 456789" /></label>
       <label>Vehicle / job type<select name="category">{cats.map(cat => <option value={cat.slug}>{cat.data.label}</option>)}</select></label>
       <label>Details<textarea name="message" rows="5" required placeholder="e.g. Focus ST bonnet + bumper stone chips, photos to follow…"></textarea></label>
       <label class="filelabel">Photos of the damage <span class="opt">(optional)</span>
